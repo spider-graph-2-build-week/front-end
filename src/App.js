@@ -1,9 +1,8 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./css/App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import RadarChart from "./components/RadarChart";
+import RadarChart2 from "./components/RadarChart2";
 import Home from "./components/Home";
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
         </header>
         <div>
           <Route exact path="/" component={Home} />
-          <Route exact path="/spiderchart" component={RadarChart} />
+          <Route exact path="/spiderchart" component={RadarChart2} />
         </div>
       </Router>
     </div>
