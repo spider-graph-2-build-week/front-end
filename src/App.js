@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import RadarChart2 from "./components/RadarChart2";
 import Home from "./components/Home";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -12,11 +13,13 @@ function App() {
         <header className="App-header">
           <div className="navBar">
             <Link to="/">Home</Link>
+            <Link to="/login">Login</Link>
             <Link to="/spiderchart">Spider Graph</Link>
           </div>
         </header>
         <div>
           <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
           <Route exact path="/spiderchart" component={RadarChart2} />
         </div>
       </Router>
