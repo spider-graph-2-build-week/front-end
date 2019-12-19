@@ -16,6 +16,10 @@ const initialState = {
   isFetching: false,
   //data storage
   //****CHANGE TO DESCRIPTIVE NAMES******
+  chartData: {
+    labels: [],
+    datasets: [{ label: "", data: [] }]
+  },
   is_Array1: [],
   is_Object1: {},
   //adding data

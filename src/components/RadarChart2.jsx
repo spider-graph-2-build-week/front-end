@@ -46,28 +46,25 @@ const data = {
   ]
 };
 
-class RadarChart2 extends Component {
-  render() {
-    console.log("data:", data);
-    return (
-      <div className="chart">
-        <Radar
-          data={data}
-          options={{
-            title: {
-              display: true,
-              text: "something",
-              fontSize: 25
-            },
-            legend: {
-              display: true,
-              position: "right"
-            }
-          }}
-        />
-      </div>
-    );
-  }
-}
+const RadarChart2 = props => {
+  return (
+    <div className="chart">
+      <Radar
+        data={data}
+        options={{
+          title: {
+            display: true,
+            text: "something",
+            fontSize: 25
+          },
+          legend: {
+            display: true,
+            position: "right"
+          }
+        }}
+      />
+    </div>
+  );
+};
 
 export default RadarChart2;
