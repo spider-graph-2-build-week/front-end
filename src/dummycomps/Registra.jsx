@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { login, handleChange } from "../actions/actions";
+import { register, handleChange } from "../actions/actions";
 
 const pushDir1 = "/spidergraph";
 
-const Login = ({
+const Register = ({
   history,
   credentials,
   handleChange,
-  login,
+  register,
   error,
-  token,
-  reFetch
+  token
 }) => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route++
@@ -21,17 +20,12 @@ const Login = ({
       localStorage.setItem("token", token);
       history.push(pushDir1);
     }
-  }, [token || reFetch]);
+  }, [token]);
 
-  if (localStorage.getItem("token")) {
-    console.log("token", token);
-  } else {
-    console.log("no token");
-  }
   return (
     <div>
-      <h2>Login:</h2>
-      <form onSubmit={e => login(e, credentials)}>
+      <h2>Register:</h2>
+      <form onSubmit={e => register(e, credentials)}>
         <input
           type="text"
           name="username"
@@ -48,9 +42,6 @@ const Login = ({
         />
         <button>Log In</button>
       </form>
-      <div className="userInfo">
-        {localStorage.getItem("token") ? "pass" : "fail"}
-      </div>
     </div>
   );
 };
@@ -61,4 +52,4 @@ const mapStateToProps = state => ({
   token: state.token
 });
 
-export default connect(mapStateToProps, { login, handleChange })(Login);
+export default connect(mapStateToProps, { register, handleChange })(Register);
