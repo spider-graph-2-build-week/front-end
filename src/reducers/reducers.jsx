@@ -204,8 +204,8 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //===Handle Change=====
     case HANDLECHANGE:
-      console.log(payload.target.value);
-      console.log(payload.form);
+      console.log(payload.target.name);
+      // console.log(payload.form);
       return {
         ...state,
         [payload.form]: {

@@ -21,9 +21,9 @@ const labelArr = data.labels;
 const DataSubmission = ({
   //mapStateToProps
   editing,
-  // data,
   dataToEdit,
   newData,
+  newBranch,
   //import from '../actions/actions
   setData,
   deleteUnit,
@@ -41,6 +41,7 @@ const DataSubmission = ({
   const dropDown1 = "Drop Down 1";
   // console.log("DataSubmission > labelArr", labelArr);
   // console.log("DataSubmission, data.datasets.length:", data.datasets.length);
+  // console.log("newData.label:", newData.label, "newData.data:", newData.data);
 
   return (
     <div className="dataField-container">
@@ -87,10 +88,12 @@ const DataSubmission = ({
           ))}
         </ul>
       </section>
-      {editing ? (
+      {editing ? ( //if editing = true...
         // add "editing" fields
         <h3>editing...</h3>
       ) : (
+        // if editing = false...
+        // add new data
         <section className="newDataset">
           <h3>New DataSet</h3>
           <form
@@ -103,14 +106,15 @@ const DataSubmission = ({
               type="text"
               placeholder="New Dataset Name"
               className="newDataset-name"
-              onChange={e => handleChange(e, "newDataName")}
+              onChange={e => handleChange(e, "newData")}
               value={newData.label}
             />
             <div className="newDataset-data">
               {data.labels.map((dataValue, index) => (
                 <input
+                  name={`newDataData${index}`}
                   type="text"
-                  placeholder={`value${index + 1}`}
+                  placeholder={`value ${index + 1}`}
                   className="newData-input"
                   value={newData.data[index]}
                   onChange={e => handleChange(e, "newData")}
@@ -122,9 +126,21 @@ const DataSubmission = ({
         </section>
       )}
       <section className="newBranch">
-        <h3>New Branch</h3>
-        <input type="text" placeholder="New Branch Name" />
-        <button>Create New Branch</button>
+        <form
+          onSubmit={e => {
+            addData(e, newData);
+          }}
+        >
+          <h3>New Branch</h3>
+          <input
+            type="text"
+            name="newBranch"
+            placeholder="New Branch Name"
+            onChange={e => handleChange(e, "newBranch")}
+            value={newBranch.label}
+          />
+          <button type="submit">Create New Branch</button>
+        </form>
       </section>
     </div>
   );
@@ -134,7 +150,8 @@ const mapStateToProps = state => ({
   // data: state.chartData.datasets,
   editing: state.isEditing,
   dataToEdit: state.dataToEdit,
-  newData: state.newData
+  newData: state.newData,
+  newBranch: state.newBranch
 });
 
 export default connect(mapStateToProps, {

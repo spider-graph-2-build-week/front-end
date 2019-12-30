@@ -146,10 +146,14 @@ export const cancelEdit = () => ({
   type: CANCELEDIT
 });
 
-export const handleChange = (event, formType) => ({
-  type: HANDLECHANGE,
-  payload: { target: event.target, form: formType }
-});
+export const handleChange = (event, formType) => {
+  console.log(`actions.jsx > handleChange > event.target}:`, event.target);
+  console.log(`actions.jsx > handleChange > formType}:`, formType);
+  return {
+    type: HANDLECHANGE,
+    payload: { target: event.target, form: formType }
+  };
+};
 export const logout = () => dispatch => {
   localStorage.clear();
   dispatch({ type: LOGOUT });
