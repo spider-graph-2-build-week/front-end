@@ -102,7 +102,7 @@ const DataSubmission = ({
             }}
           >
             <input
-              name="newDataName"
+              name="label"
               type="text"
               placeholder="New Dataset Name"
               className="newDataset-name"
@@ -113,6 +113,7 @@ const DataSubmission = ({
               {data.labels.map((dataValue, index) => (
                 <input
                   name={`newDataData${index}`}
+                  // name={`newDataData${index}`}
                   type="text"
                   placeholder={`value ${index + 1}`}
                   className="newData-input"

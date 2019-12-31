@@ -147,8 +147,8 @@ export const cancelEdit = () => ({
 });
 
 export const handleChange = (event, formType) => {
-  console.log(`actions.jsx > handleChange > event.target}:`, event.target);
-  console.log(`actions.jsx > handleChange > formType}:`, formType);
+  // console.log(`actions.jsx > handleChange > event.target}:`, event.target);
+  // console.log(`actions.jsx > handleChange > formType}:`, formType);
   return {
     type: HANDLECHANGE,
     payload: { target: event.target, form: formType }
