@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 import { data } from "../dummycomps/Data";
 import "../css/Data.css";
 
+import NewBranch from "../dummycomps/NewBranch";
+import NewDataSet from "../dummycomps/NewDataSet";
+import UserData from "../dummycomps/UserData";
+
 import {
   setData,
   deleteUnit,
@@ -60,6 +64,7 @@ const DataSubmission = ({
         </div>
       </DropdownButton>
       <section className="data-display">
+        <UserData />
         <h3>SPIDERGRAPH DATA:</h3>
         <div className="data-header">
           <span className="branch-names">Dataset Names</span>
@@ -94,7 +99,9 @@ const DataSubmission = ({
       ) : (
         // if editing = false...
         // add new data
+
         <section className="newDataset">
+          <NewDataSet />
           <h3>New DataSet</h3>
           <form
             onSubmit={e => {
@@ -127,6 +134,7 @@ const DataSubmission = ({
         </section>
       )}
       <section className="newBranch">
+        <NewBranch />
         <form
           onSubmit={e => {
             addData(e, newData);
