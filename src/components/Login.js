@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { login, handleChange } from "../actions/actions";
 
-const pushDir1 = "/spidergraph";
+const pushDir1 = "/spiderGraph";
 
 const Login = ({
   history,
@@ -21,9 +21,9 @@ const Login = ({
       localStorage.setItem("token", token);
       history.push(pushDir1);
     }
-  }, [token || reFetch]);
+  }, [token]);
 
-  if (localStorage.getItem("token")) {
+  if (token) {
     console.log("token", token);
   } else {
     console.log("no token");
@@ -46,10 +46,10 @@ const Login = ({
           value={credentials.password}
           onChange={e => handleChange(e, "credentials")}
         />
-        <button>Log In</button>
+        <button type="submit">Log In</button>
       </form>
       <div className="userInfo">
-        {localStorage.getItem("token") ? "pass" : "fail"}
+        {token ? "Sign In Successful!!!" : "Not Signed in..."}
       </div>
     </div>
   );

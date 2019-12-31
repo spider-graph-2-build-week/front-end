@@ -35,6 +35,7 @@ const initialState = {
   //logging in
   isLoggingIn: false,
   isRegistering: false,
+  didRegister: false,
   credentials: [],
   token: "",
   //getting data from API or similar
@@ -72,22 +73,25 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         error: "",
-        isRegistering: true
+        isRegistering: true,
+        didRegister: false
       };
     case REGISTERSUCCESS:
-      console.log("REGISTER success!");
+      console.log("REGISTER success! token:", payload);
       return {
         ...state,
         error: "",
         isRegistering: false,
-        token: payload
+        token: payload,
+        didRegister: true
       };
     case REGISTERFAIL:
       console.log("REGISTER failed :(");
       return {
         ...state,
         error: payload,
-        isRegistering: false
+        isRegistering: false,
+        didRegister: false
       };
     //======Login Functions========
     case LOGINSTART:
@@ -98,7 +102,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         isLoggingIn: true
       };
     case LOGINSUCCESS:
-      console.log("login success!");
+      console.log("login success!", payload);
       return {
         ...state,
         error: "",

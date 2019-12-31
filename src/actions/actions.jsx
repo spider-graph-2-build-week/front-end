@@ -62,8 +62,8 @@ export const login = (event, credentials) => dispatch => {
   axiosWithAuth()
     .post(apiLogin, credentials)
     .then(res => {
-      //   console.log("actions.jsx > login > .then:", res.data);
-      dispatch({ type: LOGINSUCCESS, payload: res.data.payload });
+      console.log("actions.jsx > login > .then:", res.data);
+      dispatch({ type: LOGINSUCCESS, payload: res.data });
     })
     .catch(err => {
       console.log("actions.jsx > login > .err", err);
