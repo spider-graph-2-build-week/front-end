@@ -1,10 +1,19 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { Radar } from "react-chartjs-2";
+import { connect } from "react-redux";
+
+import { data } from "../dummycomps/Data";
+import { getData } from "../actions/actions";
+
+import "../css/Data.css";
+
+console.log(data);
 
 //get branch names from user filled form, store in array below:
 // const branchLabels = [var1, var2, var3];
 // console.log(Radar);
 
+/*
 const colorChoice = {
   color: [
     "0,0,0",
@@ -18,6 +27,7 @@ const colorChoice = {
   lineOpacity: "0.1",
   hoverOpacity: "0.9"
 };
+*/
 
 const pointStyleOptions = [
   "circle",
@@ -85,6 +95,10 @@ const options = {
   }
 };
 
+// var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+// console.log("screen width:", w);
+
+/*
 const data = {
   userName: "Customer's Name...",
   labels: ["branch1", "branch2", "branch3", "branch4", "branch5", "branch6"],
@@ -113,10 +127,19 @@ const data = {
     }
   ]
 };
+*/
 
 const RadarChart2 = props => {
+  // useEffect(() => {
+  //   var w = Math.max(
+  //     document.documentElement.clientWidth,
+  //     window.innerWidth || 0
+  //   );
+  //   console.log("screen width:", w);
+  // });
+
   return (
-    <div className="chart">
+    <div className="chartField">
       <Radar
         data={data}
         options={{
@@ -127,7 +150,20 @@ const RadarChart2 = props => {
           },
           legend: {
             display: true,
-            position: "right"
+            position: "right",
+            labels: {
+              fontSize: 10
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: true,
+          layout: {
+            padding: {
+              left: 0,
+              right: 0,
+              bottom: 0,
+              top: 0
+            }
           }
         }}
       />
@@ -135,4 +171,7 @@ const RadarChart2 = props => {
   );
 };
 
-export default RadarChart2;
+// export default RadarChart2;
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, { getData })(RadarChart2);
