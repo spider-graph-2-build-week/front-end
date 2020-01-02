@@ -25,6 +25,8 @@ import {
   ADDBRANCHFAIL,
   //some more names
   HANDLECHANGE,
+  HANDLECHANGE_NEWBRANCH,
+  HANDLECHANGE_NEWDATASET,
   LOGOUT,
   DELETEUNIT,
   CANCELEDIT
@@ -41,20 +43,19 @@ const initialState = {
   //getting data from API or similar
   isFetching: false,
   //data storage
-  chartData: {
+  userData: {
     labels: [],
     datasets: [{ id: "", label: "", data: [] }]
   },
-  // is_Array1: [],
-  // is_Object1: {},
   //adding data
   isAdding: false,
   newData: {
+    //new dataset
     label: "",
     data: []
   },
   isNewBranch: false,
-  newBranch: [],
+  newBranch: "",
   //editing data
   isEditing: false,
   initialData: {
@@ -124,11 +125,12 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         isFetching: true
       };
     case GETDATASUCCESS:
+      console.log("getdatasuccess:", payload);
       return {
         ...state,
         error: "",
         isFetching: false,
-        chartData: payload
+        userData: payload
       };
     case GETDATAFAIL:
       return {
@@ -164,21 +166,21 @@ export const rootReducer = (state = initialState, { type, payload }) => {
     case ADDBRANCHSTART:
       return {
         ...state,
-        isAdding: true,
+        isNewBranch: true,
         err: ""
       };
     case ADDBRANCHSUCCESS:
       return {
         ...state,
         err: "",
-        isAdding: false,
+        isNewBranch: false,
         reFetch: !state.reFetch,
         newBranch: []
       };
     case ADDBRANCHFAIL:
       return {
         ...state,
-        isAdding: false,
+        isNewBranch: false,
         err: payload
       };
     //======editing data from api======
@@ -187,7 +189,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         isEditing: true,
         err: "",
-        dataToEdit: state.chartData.datasets.find(
+        dataToEdit: state.userData.datasets.find(
           dataset => `${dataset.id}` === `${payload}`
         )
       };
@@ -208,7 +210,79 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //===Handle Change=====
     case HANDLECHANGE:
-      console.log(payload.target.value);
+      console.log(
+        "handle..newdataset, reducer:",
+        payload,
+        payload.target.name,
+        payload.target.value,
+        payload.form,
+        payload.target.id,
+        state.newData
+        // ...state
+      );
+      const loc = payload.target.id;
+      // console.log(payload.form);
+      return {
+        ...state,
+        [payload.form]:
+          payload.form === "newData"
+            ? payload.target.name === "data"
+              ? //is this the right way????
+
+                /*
+                state.newData.data.map((dataVal, index) => {
+                  if (index !== loc) {
+                    return dataVal;
+                  }
+                  return {
+                    ...state[payload.form],
+                    data: [...state.newData.data, payload.target.value]
+                  };
+                })
+              : //above not working yet
+*/
+
+                {
+                  ...state[payload.form],
+                  // [payload.target.name]: payload.target.value
+                  // data: [...state.newData.data, payload.target.value]
+                  data: state.newData.data.map((dataVal, index) =>
+                    index === loc
+                      ? [...state.newData.data[index], payload.target.value]
+                      : console.log("nope")
+                  )
+                }
+              : {
+                  ...state[payload.form],
+                  [payload.target.name]: payload.target.value
+                }
+            : {
+                ...state[payload.form],
+                [payload.target.name]: payload.target.value
+              }
+      };
+    case HANDLECHANGE_NEWDATASET:
+      console.log(
+        "handle..newdataset, reducer:",
+        payload.target.name,
+        payload.target.value,
+        payload.form
+      );
+      // console.log(payload.form);
+      return {
+        ...state,
+        [payload.form]: {
+          ...state[payload.form],
+          [payload.target.name]: payload.target.value
+        }
+      };
+    case HANDLECHANGE_NEWBRANCH:
+      console.log(
+        "handle..newbranch, reducer:",
+        payload.target.name,
+        payload.target.value,
+        payload.form
+      );
       // console.log(payload.form);
       return {
         ...state,
@@ -242,7 +316,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         //getting data from API or similar
         isFetching: false,
         //data storage
-        chartData: {
+        userData: {
           labels: [],
           datasets: [{ id: "", label: "", data: [] }]
         },

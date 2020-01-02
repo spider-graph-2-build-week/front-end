@@ -17,7 +17,9 @@ import {
   handleChange,
   addData,
   logout,
-  cancelEdit
+  cancelEdit,
+  getData,
+  addBranch
 } from "../actions/actions";
 
 const labelArr = data.labels;
@@ -28,6 +30,8 @@ const DataSubmission = ({
   dataToEdit,
   newData,
   newBranch,
+  reFetch,
+  userData,
   //import from '../actions/actions
   setData,
   deleteUnit,
@@ -36,11 +40,12 @@ const DataSubmission = ({
   handleChange,
   addData,
   logout,
-  cancelEdit
+  cancelEdit,
+  getData
 }) => {
-  // useEffect(() => {
-  // labelArr = getData(data.labels);
-  // }, []);
+  useEffect(() => {
+    getData();
+  }, [reFetch]);
 
   const dropDown1 = "Drop Down 1";
   // console.log("DataSubmission > labelArr", labelArr);
@@ -64,34 +69,8 @@ const DataSubmission = ({
         </div>
       </DropdownButton>
       <section className="data-display">
-        <UserData />
-        <h3>SPIDERGRAPH DATA:</h3>
-        <div className="data-header">
-          <span className="branch-names">Dataset Names</span>
-          {/* mapping branch names */}
-          {data.labels.map(branchName => (
-            <span className="branch-names">{branchName}</span>
-          ))}
-        </div>
-        <ul>
-          {data.datasets.map(dataset => (
-            <li key={dataset.id} onClick={() => startEdit(dataset)}>
-              <button
-                className="delete"
-                onClick={e => {
-                  e.stopPropagation();
-                  deleteUnit(dataset);
-                }}
-              >
-                -
-              </button>
-              <span className="dataset-names">{dataset.label}</span>
-              {dataset.data.map(value => (
-                <span className="data">{value}</span>
-              ))}
-            </li>
-          ))}
-        </ul>
+        {/* moved information into a component */}
+        <UserData userData={userData} />
       </section>
       {editing ? ( //if editing = true...
         // add "editing" fields
@@ -101,55 +80,11 @@ const DataSubmission = ({
         // add new data
 
         <section className="newDataset">
-          <NewDataSet />
-          <h3>New DataSet</h3>
-          <form
-            onSubmit={e => {
-              addData(e, newData);
-            }}
-          >
-            <input
-              name="label"
-              type="text"
-              placeholder="New Dataset Name"
-              className="newDataset-name"
-              onChange={e => handleChange(e, "newData")}
-              value={newData.label}
-            />
-            <div className="newDataset-data">
-              {data.labels.map((dataValue, index) => (
-                <input
-                  name={`newDataData${index}`}
-                  // name={`newDataData${index}`}
-                  type="text"
-                  placeholder={`value ${index + 1}`}
-                  className="newData-input"
-                  value={newData.data[index]}
-                  onChange={e => handleChange(e, "newData")}
-                />
-              ))}
-            </div>
-            <button type="submit">Add Dataset</button>
-          </form>
+          <NewDataSet userData={userData} />
         </section>
       )}
       <section className="newBranch">
         <NewBranch />
-        <form
-          onSubmit={e => {
-            addData(e, newData);
-          }}
-        >
-          <h3>New Branch</h3>
-          <input
-            type="text"
-            name="newBranch"
-            placeholder="New Branch Name"
-            onChange={e => handleChange(e, "newBranch")}
-            value={newBranch.label}
-          />
-          <button type="submit">Create New Branch</button>
-        </form>
       </section>
     </div>
   );
@@ -160,7 +95,9 @@ const mapStateToProps = state => ({
   editing: state.isEditing,
   dataToEdit: state.dataToEdit,
   newData: state.newData,
-  newBranch: state.newBranch
+  newBranch: state.newBranch,
+  reFetch: state.reFetch,
+  userData: state.userData
 });
 
 export default connect(mapStateToProps, {
@@ -171,5 +108,6 @@ export default connect(mapStateToProps, {
   handleChange,
   addData,
   logout,
-  cancelEdit
+  cancelEdit,
+  getData
 })(DataSubmission);
