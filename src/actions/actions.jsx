@@ -31,7 +31,7 @@ export const ADDBRANCHSTART = "ADDBRANCHSTART";
 export const ADDBRANCHSUCCESS = "ADDBRANCHSUCCESS";
 export const ADDBRANCHFAIL = "ADDBRANCHFAIL";
 
-export const HANDLECHANGE_NEWDATASET = "HANDLECHANGE_NEWDATASET";
+export const HANDLENEWDATASET = "HANDLENEWDATASET";
 export const HANDLECHANGE_NEWBRANCH = "HANDLECHANGE_NEWBRANCH";
 export const HANDLECHANGE = "HANDLECHANGE";
 export const LOGOUT = "LOGOUT";
@@ -157,36 +157,23 @@ export const cancelEdit = () => ({
 });
 
 export const handleChange = (event, formType) => {
-  // console.log(`actions.jsx > handleChange > event.target.va}:`, event.target);
-  console.log(
-    `actions.jsx > handleChange > formType, event.target}:`,
-    formType,
-    event.target
-  );
   return {
     type: HANDLECHANGE,
     payload: { target: event.target, form: formType }
   };
 };
-export const handleChange_newDataset = (event, formType) => {
-  // console.log(`actions.jsx > handleChange > event.target.va}:`, event.target);
+export const handleNewDataset = (event, formType) => {
   console.log(
     `actions.jsx > handleChange > formType, event.target}:`,
     formType,
     event.target
   );
   return {
-    type: HANDLECHANGE_NEWDATASET,
+    type: HANDLENEWDATASET,
     payload: { target: event.target, form: formType }
   };
 };
 export const handleChange_newBranch = (event, formType) => {
-  // console.log(`actions.jsx > handleChange > event.target.va}:`, event.target);
-  console.log(
-    `actions.jsx > handleChange > formType, event.target}:`,
-    formType,
-    event.target
-  );
   return {
     type: HANDLECHANGE_NEWBRANCH,
     payload: { target: event.target, form: formType }

@@ -26,7 +26,7 @@ import {
   //some more names
   HANDLECHANGE,
   HANDLECHANGE_NEWBRANCH,
-  HANDLECHANGE_NEWDATASET,
+  HANDLENEWDATASET,
   LOGOUT,
   DELETEUNIT,
   CANCELEDIT
@@ -44,6 +44,7 @@ const initialState = {
   isFetching: false,
   //data storage
   userData: {
+    userName: "",
     labels: [],
     datasets: [{ id: "", label: "", data: [] }]
   },
@@ -125,7 +126,14 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         isFetching: true
       };
     case GETDATASUCCESS:
-      console.log("getdatasuccess:", payload);
+      console.log(
+        "reducers>GETDATASUCCESS>payload, userData, newData:\n",
+        payload,
+        "\n",
+        state.userData,
+        "\n",
+        state.newData
+      );
       return {
         ...state,
         error: "",
@@ -212,70 +220,66 @@ export const rootReducer = (state = initialState, { type, payload }) => {
     case HANDLECHANGE:
       console.log(
         "handle..newdataset, reducer:",
-        payload,
-        payload.target.name,
-        payload.target.value,
-        payload.form,
-        payload.target.id,
+        payload, //all "input" details
+        payload.target.name, //input field name
+        payload.target.value, //input
+        payload.form, //"newData" from handleChange
+        payload.target.id, //gives the index #
         state.newData
         // ...state
       );
       const loc = payload.target.id;
-      // console.log(payload.form);
+      console.log("newData.data", state);
       return {
         ...state,
         [payload.form]:
           payload.form === "newData"
-            ? payload.target.name === "data"
-              ? //is this the right way????
-
-                /*
-                state.newData.data.map((dataVal, index) => {
-                  if (index !== loc) {
-                    return dataVal;
-                  }
-                  return {
-                    ...state[payload.form],
-                    data: [...state.newData.data, payload.target.value]
-                  };
-                })
-              : //above not working yet
-*/
-
-                {
-                  ...state[payload.form],
-                  // [payload.target.name]: payload.target.value
-                  // data: [...state.newData.data, payload.target.value]
-                  data: state.newData.data.map((dataVal, index) =>
-                    index === loc
-                      ? [...state.newData.data[index], payload.target.value]
-                      : console.log("nope")
-                  )
-                }
-              : {
-                  ...state[payload.form],
-                  [payload.target.name]: payload.target.value
-                }
+            ? {
+                ...state[payload.form],
+                [payload.target.name]: payload.target.value
+              }
             : {
                 ...state[payload.form],
                 [payload.target.name]: payload.target.value
               }
       };
-    case HANDLECHANGE_NEWDATASET:
+    case HANDLENEWDATASET:
+      let branchLength = state.userData.labels.length;
       console.log(
-        "handle..newdataset, reducer:",
-        payload.target.name,
-        payload.target.value,
-        payload.form
+        "reducer.HANDLENEWDATASET> ..name, ..value, ..form, ..id, ..labels:\n",
+        // payload, //all "input" details
+        `..name: ${payload.target.name}\n`, //input field name
+        `..value: ${payload.target.value}\n`, //input
+        `.. form: ${payload.form}\n`, //"newData" from handleChange
+        `..id: ${payload.target.id}\n`, //gives the index #
+        `..userData.labels: ${state.userData.labels}\n`
+        // ...state
       );
-      // console.log(payload.form);
+      console.log(
+        "reducer.HANDLENEWDATASET> userData.branch length:",
+        state.userData.labels.length
+      );
+      if (state.newData.data.length === 0) {
+        for (let i = 0; i < branchLength; i++) {
+          state.newData.data[i] = 0;
+        }
+      }
+      console.log(state.newData.data);
       return {
-        ...state,
-        [payload.form]: {
-          ...state[payload.form],
-          [payload.target.name]: payload.target.value
+        ...state[payload.form],
+        newData: {
+          ...state[payload.form].newData,
+          data: state.newData.data.map((dataVal, index) => {
+            console.log("reducer.data...", dataVal);
+            if (index === payload.target.id) {
+              return payload.target.value;
+            }
+            //
+            return dataVal;
+          })
         }
       };
+    //__________
     case HANDLECHANGE_NEWBRANCH:
       console.log(
         "handle..newbranch, reducer:",

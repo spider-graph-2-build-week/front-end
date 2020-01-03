@@ -1,17 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, setState } from "react";
 import { connect } from "react-redux";
 
-import { addData, handleChange } from "../actions/actions";
+import { addData, handleChange, handleNewDataset } from "../actions/actions";
 
-const NewDataSet = ({ userData, addData, handleChange, newData }) => {
+const NewDataSet = ({
+  //props passed down...
+  userData,
+  //mapStateToProps...
+  newData,
+  //import from actions...
+  addData,
+  handleChange,
+  handleNewDataset
+}) => {
+  const { labels } = userData;
+  // console.log("NewDataSet>userData:", userData);
+
   useEffect(() => {
-    console.log("newData:", newData, newData.data[0]);
-    // labels.map(each => {
-    //   newData.data[each] = 0;
-    // });
+    console.log("NewDataSet>userData, newData:\n", userData, "\n", newData);
   });
 
-  const { labels } = userData;
   return (
     <div>
       <h3>New DataSet</h3>
@@ -29,27 +37,25 @@ const NewDataSet = ({ userData, addData, handleChange, newData }) => {
           value={newData.label}
         />
         <div className="newDataset-data">
-          {labels.map(
-            (dataValue, index) => (
-              console.log("labels.map", index),
-              (
-                <input
-                  id={index}
-                  name={`data`}
-                  type="number"
-                  min="0"
-                  max="100"
-                  placeholder={`dataset ${index}`}
-                  className="newData-input"
-                  value={newData.data[index]}
-                  onChange={e => {
-                    console.log(e.target, index);
-                    handleChange(e, "newData");
-                  }}
-                />
-              )
-            )
-          )}
+          {labels.map((dataValue, index) => {
+            // console.log("labels.map", newData);
+            return (
+              <input
+                id={index}
+                name={`data`}
+                type="number"
+                min="0"
+                max="100"
+                placeholder={`dataset ${index}`}
+                className="newData-input"
+                value={newData.data[index]}
+                onChange={e => {
+                  // console.log(e.target, index);
+                  handleNewDataset(e, "newData");
+                }}
+              />
+            );
+          })}
         </div>
         <button type="submit">Add Dataset</button>
       </form>
@@ -62,4 +68,8 @@ const mapStateToProps = state => ({
   newData: state.newData
 });
 
-export default connect(mapStateToProps, { addData, handleChange })(NewDataSet);
+export default connect(mapStateToProps, {
+  addData,
+  handleChange,
+  handleNewDataset
+})(NewDataSet);

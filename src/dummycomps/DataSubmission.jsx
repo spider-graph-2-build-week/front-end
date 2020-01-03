@@ -48,10 +48,7 @@ const DataSubmission = ({
   }, [reFetch]);
 
   const dropDown1 = "Drop Down 1";
-  // console.log("DataSubmission > labelArr", labelArr);
-  // console.log("DataSubmission, data.datasets.length:", data.datasets.length);
-  // console.log("newData.label:", newData.label, "newData.data:", newData.data);
-
+  console.log("DataSubmission>userData:", userData);
   return (
     <div className="dataField-container">
       Data

@@ -15,7 +15,7 @@ const SpiderGraph = ({ reFetch }) => {
       document.documentElement.clientWidth,
       window.innerWidth || 0
     );
-    console.log("screen width:", w);
+    // console.log("screen width:", w);
   });
 
   return (

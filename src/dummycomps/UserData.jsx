@@ -4,8 +4,15 @@ import { connect } from "react-redux";
 import { startEdit, deleteUnit } from "../actions/actions";
 
 const UserData = ({ userData, startEdit, deleteUnit }) => {
-  const { userName, labels, datasets } = userData;
-  console.log("UserData:", userData, userName, labels, datasets);
+  const { labels, datasets } = userData;
+  console.log(
+    "UserData> userData, labels, dataset:",
+    userData,
+    "\n",
+    labels,
+    "\n",
+    datasets
+  );
   return (
     <div>
       <h3>UserData:</h3>
@@ -44,7 +51,8 @@ const UserData = ({ userData, startEdit, deleteUnit }) => {
 };
 
 const mapStateToProps = state => ({
-  error: state.error
+  error: state.error,
+  userData: state.userData
 });
 
 export default connect(mapStateToProps, { startEdit, deleteUnit })(UserData);

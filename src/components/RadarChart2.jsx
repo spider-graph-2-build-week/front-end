@@ -9,26 +9,6 @@ import "../css/Data.css";
 
 console.log(data);
 
-//get branch names from user filled form, store in array below:
-// const branchLabels = [var1, var2, var3];
-// console.log(Radar);
-
-/*
-const colorChoice = {
-  color: [
-    "0,0,0",
-    "11,156,49",
-    "255,255,0",
-    "153,51,102",
-    "0,0,225",
-    "255,0,0"
-  ],
-  fillOpacity: "0.3",
-  lineOpacity: "0.1",
-  hoverOpacity: "0.9"
-};
-*/
-
 const pointStyleOptions = [
   "circle",
   "cross",
