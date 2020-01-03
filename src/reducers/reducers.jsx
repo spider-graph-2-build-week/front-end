@@ -155,6 +155,16 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         err: ""
       };
     case ADDDATASUCCESS:
+      console.log(payload);
+      let newDataId = state.userData.datasets.length.toString();
+      console.log(newDataId);
+      let newDataInput = {
+        id: 5,
+        label: payload.label,
+        data: payload.data,
+        backgroundColor: "black",
+        borderColor: "black"
+      };
       return {
         ...state,
         err: "",
@@ -163,8 +173,23 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         newData: {
           label: "",
           data: []
+        },
+        //only doing the below until API is up and running....
+        userData: {
+          ...state.userData,
+          datasets: {
+            ...state.userData.datasets, //all previous info
+            3: {
+              id: 5,
+              label: payload.label,
+              data: payload.data,
+              backgroundColor: "black",
+              borderColor: "black"
+            } //new data
+          }
         }
       };
+
     case ADDDATAFAIL:
       return {
         ...state,
@@ -245,36 +270,32 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     case HANDLENEWDATASET:
       let branchLength = state.userData.labels.length;
+      /*
       console.log(
-        "reducer.HANDLENEWDATASET> ..name, ..value, ..form, ..id, ..labels:\n",
+        "reducer.HANDLENEWDATASET>\n",
         // payload, //all "input" details
         `..name: ${payload.target.name}\n`, //input field name
         `..value: ${payload.target.value}\n`, //input
         `.. form: ${payload.form}\n`, //"newData" from handleChange
         `..id: ${payload.target.id}\n`, //gives the index #
-        `..userData.labels: ${state.userData.labels}\n`
-        // ...state
+        `state: ${state}\n`
       );
-      console.log(
-        "reducer.HANDLENEWDATASET> userData.branch length:",
-        state.userData.labels.length
-      );
+      */
       if (state.newData.data.length === 0) {
         for (let i = 0; i < branchLength; i++) {
           state.newData.data[i] = 0;
         }
       }
-      console.log(state.newData.data);
       return {
-        ...state[payload.form],
+        ...state,
         newData: {
-          ...state[payload.form].newData,
+          ...state.newData,
           data: state.newData.data.map((dataVal, index) => {
-            console.log("reducer.data...", dataVal);
-            if (index === payload.target.id) {
+            // console.log("reducer.data...", dataVal, index, payload.target.id);
+            if (index == payload.target.id) {
+              console.log("index matches!!");
               return payload.target.value;
             }
-            //
             return dataVal;
           })
         }

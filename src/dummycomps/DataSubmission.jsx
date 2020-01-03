@@ -32,6 +32,7 @@ const DataSubmission = ({
   newBranch,
   reFetch,
   userData,
+  state,
   //import from '../actions/actions
   setData,
   deleteUnit,
@@ -45,10 +46,12 @@ const DataSubmission = ({
 }) => {
   useEffect(() => {
     getData();
+    console.log("DataSumbission>getData");
   }, [reFetch]);
 
   const dropDown1 = "Drop Down 1";
-  console.log("DataSubmission>userData:", userData);
+  // console.log("DataSubmission>userData:", userData);
+  console.log("state:", state);
   return (
     <div className="dataField-container">
       Data
@@ -94,7 +97,8 @@ const mapStateToProps = state => ({
   newData: state.newData,
   newBranch: state.newBranch,
   reFetch: state.reFetch,
-  userData: state.userData
+  userData: state.userData,
+  state: state
 });
 
 export default connect(mapStateToProps, {

@@ -32,21 +32,6 @@ const App = ({ logout, reFetch }) => {
     <div className="App">
       <Router>
         <header className="App-header">
-          {/* 
-          <div className="navBar">
-            <Link to="/">Home</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/spiderchart">Spider Graph</Link>
-            <Link to ='/register'>Register</Link>
-          </div>
-        </header>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/spiderchart" component={RadarChart2} />
-          <Route exact path='/register' component={Register} />
-        </div>
-          */}
           {/*  */}
           <div className="navBar">
             <Link to={pathNames[0]}>Home</Link>
@@ -78,5 +63,4 @@ const App = ({ logout, reFetch }) => {
   );
 };
 
-// export default App;
 export default connect(null, { logout })(App);

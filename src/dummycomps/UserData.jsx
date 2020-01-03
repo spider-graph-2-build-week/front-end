@@ -6,12 +6,10 @@ import { startEdit, deleteUnit } from "../actions/actions";
 const UserData = ({ userData, startEdit, deleteUnit }) => {
   const { labels, datasets } = userData;
   console.log(
-    "UserData> userData, labels, dataset:",
-    userData,
-    "\n",
-    labels,
-    "\n",
-    datasets
+    "UserData>",
+    `userData: ${userData}\n`,
+    `labels: ${labels}\n`,
+    `datasets: ${datasets}\n`
   );
   return (
     <div>
@@ -25,27 +23,32 @@ const UserData = ({ userData, startEdit, deleteUnit }) => {
           </span>
         ))}
       </div>
-      <ul>
-        {datasets.map(dataset => (
-          <li key={dataset.id} onClick={() => startEdit(dataset)}>
-            <button
-              className="delete"
-              onClick={e => {
-                e.stopPropagation();
-                deleteUnit(dataset);
-              }}
-            >
-              -
-            </button>
-            <span className="dataset-names">{dataset.label}</span>
-            {dataset.data.map((value, index) => (
-              <span key={`${dataset.id},${index}`} className="data">
-                {value}
-              </span>
-            ))}
-          </li>
-        ))}
-      </ul>
+      {!datasets.length ? (
+        <h5>Loading...</h5>
+      ) : (
+        // console.log("datasets.length is ")
+        <ul>
+          {datasets.map(dataset => (
+            <li key={dataset.id} onClick={() => startEdit(dataset)}>
+              <button
+                className="delete"
+                onClick={e => {
+                  e.stopPropagation();
+                  deleteUnit(dataset);
+                }}
+              >
+                -
+              </button>
+              <span className="dataset-names">{dataset.label}</span>
+              {dataset.data.map((value, index) => (
+                <span key={`${dataset.id},${index}`} className="data">
+                  {value}
+                </span>
+              ))}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
