@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import { logout } from "./actions/actions";
 
 //component testing...
-import Register from "./dummycomps/Registra";
+import Register from "./dummycomps/Registration";
 import DataSubmission from "./dummycomps/DataSubmission";
 import SpiderGraph from "./dummycomps/SpiderGraph";
 import { connect } from "react-redux";

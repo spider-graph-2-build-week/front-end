@@ -25,6 +25,8 @@ import {
   ADDBRANCHFAIL,
   //some more names
   HANDLECHANGE,
+  HANDLECHANGE_NEWBRANCH,
+  HANDLENEWDATASET,
   LOGOUT,
   DELETEUNIT,
   CANCELEDIT
@@ -35,25 +37,26 @@ const initialState = {
   //logging in
   isLoggingIn: false,
   isRegistering: false,
+  didRegister: false,
   credentials: [],
   token: "",
   //getting data from API or similar
   isFetching: false,
   //data storage
-  chartData: {
+  userData: {
+    userName: "",
     labels: [],
     datasets: [{ id: "", label: "", data: [] }]
   },
-  // is_Array1: [],
-  // is_Object1: {},
   //adding data
   isAdding: false,
   newData: {
+    //new dataset
     label: "",
     data: []
   },
   isNewBranch: false,
-  newBranch: [],
+  newBranch: "",
   //editing data
   isEditing: false,
   initialData: {
@@ -72,22 +75,25 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         error: "",
-        isRegistering: true
+        isRegistering: true,
+        didRegister: false
       };
     case REGISTERSUCCESS:
-      console.log("REGISTER success!");
+      console.log("REGISTER success! token:", payload);
       return {
         ...state,
         error: "",
         isRegistering: false,
-        token: payload
+        token: payload,
+        didRegister: true
       };
     case REGISTERFAIL:
       console.log("REGISTER failed :(");
       return {
         ...state,
         error: payload,
-        isRegistering: false
+        isRegistering: false,
+        didRegister: false
       };
     //======Login Functions========
     case LOGINSTART:
@@ -98,7 +104,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         isLoggingIn: true
       };
     case LOGINSUCCESS:
-      console.log("login success!");
+      console.log("login success!", payload);
       return {
         ...state,
         error: "",
@@ -120,11 +126,19 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         isFetching: true
       };
     case GETDATASUCCESS:
+      console.log(
+        "reducers>GETDATASUCCESS>payload, userData, newData:\n",
+        payload,
+        "\n",
+        state.userData,
+        "\n",
+        state.newData
+      );
       return {
         ...state,
         error: "",
         isFetching: false,
-        chartData: payload
+        userData: payload
       };
     case GETDATAFAIL:
       return {
@@ -160,21 +174,21 @@ export const rootReducer = (state = initialState, { type, payload }) => {
     case ADDBRANCHSTART:
       return {
         ...state,
-        isAdding: true,
+        isNewBranch: true,
         err: ""
       };
     case ADDBRANCHSUCCESS:
       return {
         ...state,
         err: "",
-        isAdding: false,
+        isNewBranch: false,
         reFetch: !state.reFetch,
         newBranch: []
       };
     case ADDBRANCHFAIL:
       return {
         ...state,
-        isAdding: false,
+        isNewBranch: false,
         err: payload
       };
     //======editing data from api======
@@ -183,7 +197,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         isEditing: true,
         err: "",
-        dataToEdit: state.chartData.datasets.find(
+        dataToEdit: state.userData.datasets.find(
           dataset => `${dataset.id}` === `${payload}`
         )
       };
@@ -204,7 +218,75 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //===Handle Change=====
     case HANDLECHANGE:
-      console.log(payload.target.value);
+      console.log(
+        "handle..newdataset, reducer:",
+        payload, //all "input" details
+        payload.target.name, //input field name
+        payload.target.value, //input
+        payload.form, //"newData" from handleChange
+        payload.target.id, //gives the index #
+        state.newData
+        // ...state
+      );
+      const loc = payload.target.id;
+      console.log("newData.data", state);
+      return {
+        ...state,
+        [payload.form]:
+          payload.form === "newData"
+            ? {
+                ...state[payload.form],
+                [payload.target.name]: payload.target.value
+              }
+            : {
+                ...state[payload.form],
+                [payload.target.name]: payload.target.value
+              }
+      };
+    case HANDLENEWDATASET:
+      let branchLength = state.userData.labels.length;
+      console.log(
+        "reducer.HANDLENEWDATASET> ..name, ..value, ..form, ..id, ..labels:\n",
+        // payload, //all "input" details
+        `..name: ${payload.target.name}\n`, //input field name
+        `..value: ${payload.target.value}\n`, //input
+        `.. form: ${payload.form}\n`, //"newData" from handleChange
+        `..id: ${payload.target.id}\n`, //gives the index #
+        `..userData.labels: ${state.userData.labels}\n`
+        // ...state
+      );
+      console.log(
+        "reducer.HANDLENEWDATASET> userData.branch length:",
+        state.userData.labels.length
+      );
+      if (state.newData.data.length === 0) {
+        for (let i = 0; i < branchLength; i++) {
+          state.newData.data[i] = 0;
+        }
+      }
+      console.log(state.newData.data);
+      return {
+        ...state[payload.form],
+        newData: {
+          ...state[payload.form].newData,
+          data: state.newData.data.map((dataVal, index) => {
+            console.log("reducer.data...", dataVal);
+            if (index === payload.target.id) {
+              return payload.target.value;
+            }
+            //
+            return dataVal;
+          })
+        }
+      };
+    //__________
+    case HANDLECHANGE_NEWBRANCH:
+      console.log(
+        "handle..newbranch, reducer:",
+        payload.target.name,
+        payload.target.value,
+        payload.form
+      );
       // console.log(payload.form);
       return {
         ...state,
@@ -238,7 +320,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         //getting data from API or similar
         isFetching: false,
         //data storage
-        chartData: {
+        userData: {
           labels: [],
           datasets: [{ id: "", label: "", data: [] }]
         },

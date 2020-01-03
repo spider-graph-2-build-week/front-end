@@ -1,5 +1,6 @@
 // import axios from "axios";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { data } from "../dummycomps/Data.jsx";
 
 //var names with all caps lock represents global variables
 export const GLOBAL_VAR_1 = "GLOBAL_VAR_1";
@@ -30,6 +31,8 @@ export const ADDBRANCHSTART = "ADDBRANCHSTART";
 export const ADDBRANCHSUCCESS = "ADDBRANCHSUCCESS";
 export const ADDBRANCHFAIL = "ADDBRANCHFAIL";
 
+export const HANDLENEWDATASET = "HANDLENEWDATASET";
+export const HANDLECHANGE_NEWBRANCH = "HANDLECHANGE_NEWBRANCH";
 export const HANDLECHANGE = "HANDLECHANGE";
 export const LOGOUT = "LOGOUT";
 export const DELETEUNIT = "DELETEUNIT";
@@ -38,7 +41,10 @@ export const CANCELEDIT = "CANCELEDIT";
 const apiBase = "https://spider-graph-bw.herokuapp.com/api/auth";
 const apiRegister = `${apiBase}/register`;
 const apiLogin = `${apiBase}/login`;
-const apiData = `${apiBase}/data`;
+// const apiData = `${apiBase}/data`;
+
+//using this for now. change after api is set up correctly
+const apiData = "https://jsonplaceholder.typicode.com/todos/1";
 
 const testInfo = {
   testName: "Steve",
@@ -62,8 +68,8 @@ export const login = (event, credentials) => dispatch => {
   axiosWithAuth()
     .post(apiLogin, credentials)
     .then(res => {
-      //   console.log("actions.jsx > login > .then:", res.data);
-      dispatch({ type: LOGINSUCCESS, payload: res.data.payload });
+      console.log("actions.jsx > login > .then:", res.data);
+      dispatch({ type: LOGINSUCCESS, payload: res.data });
     })
     .catch(err => {
       console.log("actions.jsx > login > .err", err);
@@ -94,7 +100,11 @@ export const getData = () => dispatch => {
     .get(apiData)
     .then(res => {
       console.log("actions > getData > res:", res);
-      dispatch({ type: GETDATASUCCESS, payload: res.data });
+      console.log("getData.then, data: ", data);
+      // dispatch({ type: GETDATASUCCESS, payload: res.data });
+      console.log("CHANGE getData.then TO THE CORRECT API!!!");
+      //using the below FOR NOW. CHANGE LATER!!!
+      dispatch({ type: GETDATASUCCESS, payload: data });
     })
     .catch(err => {
       console.log("actions > getData.err:", err);
@@ -147,13 +157,29 @@ export const cancelEdit = () => ({
 });
 
 export const handleChange = (event, formType) => {
-  // console.log(`actions.jsx > handleChange > event.target}:`, event.target);
-  // console.log(`actions.jsx > handleChange > formType}:`, formType);
   return {
     type: HANDLECHANGE,
     payload: { target: event.target, form: formType }
   };
 };
+export const handleNewDataset = (event, formType) => {
+  console.log(
+    `actions.jsx > handleChange > formType, event.target}:`,
+    formType,
+    event.target
+  );
+  return {
+    type: HANDLENEWDATASET,
+    payload: { target: event.target, form: formType }
+  };
+};
+export const handleChange_newBranch = (event, formType) => {
+  return {
+    type: HANDLECHANGE_NEWBRANCH,
+    payload: { target: event.target, form: formType }
+  };
+};
+
 export const logout = () => dispatch => {
   localStorage.clear();
   dispatch({ type: LOGOUT });
