@@ -3,13 +3,21 @@ import { connect } from "react-redux";
 
 import { addBranch, handleChange } from "../actions/actions";
 
-const NewBranch = ({ newData, newBranch }) => {
+const NewBranch = ({
+  //mapStateToProps...
+  newData,
+  newBranch,
+  //import from actions...
+  addBranch,
+  handleChange
+}) => {
+  console.log(newBranch);
   return (
     <div>
       NewBranch
       <form
         onSubmit={e => {
-          addBranch(e, newBranch);
+          addBranch(e, addBranch);
         }}
       >
         <h3>New Branch</h3>
@@ -18,7 +26,7 @@ const NewBranch = ({ newData, newBranch }) => {
           name="newBranch"
           placeholder="New Branch Name"
           onChange={e => handleChange(e, "newBranch")}
-          value={newData.newBranch}
+          value={newBranch}
         />
         <button type="submit">Create New Branch</button>
       </form>

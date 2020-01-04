@@ -1,7 +1,11 @@
 import React, { useEffect, setState } from "react";
 import { connect } from "react-redux";
 
-import { addData, handleChange, handleNewDataset } from "../actions/actions";
+import {
+  addData,
+  handleChange
+  // handleNewDataset
+} from "../actions/actions";
 
 const NewDataSet = ({
   //props passed down...
@@ -10,11 +14,9 @@ const NewDataSet = ({
   newData,
   //import from actions...
   addData,
-  handleChange,
-  handleNewDataset
+  handleChange
 }) => {
   const { labels } = userData;
-  // console.log("NewDataSet>userData:", userData);
 
   useEffect(() => {
     console.log("NewDataSet>userData, newData:\n", userData, "\n", newData);
@@ -51,7 +53,7 @@ const NewDataSet = ({
                 value={newData.data[index]}
                 onChange={e => {
                   // console.log(e.target, index);
-                  handleNewDataset(e, "newData");
+                  handleChange(e, "newData");
                 }}
               />
             );
@@ -70,6 +72,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   addData,
-  handleChange,
-  handleNewDataset
+  handleChange
 })(NewDataSet);
