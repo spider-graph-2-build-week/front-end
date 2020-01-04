@@ -86,15 +86,25 @@ export const register = (event, credentials) => dispatch => {
 };
 
 //get data from api
-export const getData = () => dispatch => {
+export const getData = dummyStuff => dispatch => {
+  //====
+  if (!dummyStuff.userName) {
+    var dummyData = data;
+  } else {
+    var dummyData = dummyStuff;
+  }
+  //====
   dispatch({ type: GETDATASTART });
   axiosWithAuth()
     .get(apiData)
     .then(res => {
       // dispatch({ type: GETDATASUCCESS, payload: res.data });
-      console.log("CHANGE getData.then TO THE CORRECT API!!!\n data:", data);
+      console.log(
+        "CHANGE getData.then TO THE CORRECT API!!!\n dummyData:",
+        dummyData
+      );
       //using the below FOR NOW. CHANGE LATER!!!
-      dispatch({ type: GETDATASUCCESS, payload: data });
+      dispatch({ type: GETDATASUCCESS, payload: dummyData });
     })
     .catch(err => {
       console.log("actions > getData.err:", err);

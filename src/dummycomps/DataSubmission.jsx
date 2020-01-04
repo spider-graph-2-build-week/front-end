@@ -45,8 +45,8 @@ const DataSubmission = ({
   getData
 }) => {
   useEffect(() => {
-    getData();
-    console.log("DataSumbission>getData");
+    getData(userData);
+    console.log("DataSumbission>getData", userData);
   }, [reFetch]);
 
   const dropDown1 = "Drop Down 1";

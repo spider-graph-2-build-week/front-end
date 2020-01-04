@@ -155,18 +155,25 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         err: ""
       };
     case ADDDATASUCCESS:
-      console.log(payload);
       let newDataId = state.userData.datasets.length.toString();
-      console.log(newDataId);
+      console.log(
+        `ADDDATASUCCESS>\n`,
+        `newDataId:${newDataId}`,
+        `payload: ${payload}`
+      );
+      //
       let newDataInput = {
-        id: 5,
+        id: newDataId,
         label: payload.label,
         data: payload.data,
         backgroundColor: "black",
         borderColor: "black"
       };
+      //
+      console.log(state.userData.datasets);
+      console.log(newDataInput);
       return {
-        ...state,
+        ...state, //spread operator
         err: "",
         isAdding: false,
         reFetch: !state.reFetch,
@@ -177,16 +184,18 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         //only doing the below until API is up and running....
         userData: {
           ...state.userData,
-          datasets: {
+          datasets: [
             ...state.userData.datasets, //all previous info
-            3: {
-              id: 5,
+            {
+              id: newDataId,
               label: payload.label,
               data: payload.data,
               backgroundColor: "black",
               borderColor: "black"
             } //new data
-          }
+
+            //  {newDataInput} //new data]
+          ]
         }
       };
 
@@ -244,17 +253,17 @@ export const rootReducer = (state = initialState, { type, payload }) => {
     //===Handle Change=====
     case HANDLECHANGE:
       console.log(
-        "handle..newdataset, reducer:",
-        payload, //all "input" details
-        payload.target.name, //input field name
-        payload.target.value, //input
-        payload.form, //"newData" from handleChange
-        payload.target.id, //gives the index #
-        state.newData
+        "handle..newdataset, reducer:\n",
+        `payload: ${payload}\n`, //all "input" details
+        `.name: ${payload.target.name}\n`, //input field name
+        `.value: ${payload.target.value}\n`, //input
+        `.form: ${payload.form}\n`, //"newData" from handleChange
+        `.id: ${payload.target.id}\n`, //gives the index #
+        `state.newData: ${state.newData}\n`,
+        `state: ${state.newData}\n`
         // ...state
       );
       const loc = payload.target.id;
-      console.log("newData.data", state);
       return {
         ...state,
         [payload.form]:

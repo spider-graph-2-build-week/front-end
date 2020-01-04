@@ -109,7 +109,7 @@ const data = {
 };
 */
 
-const RadarChart2 = props => {
+const RadarChart2 = ({ userData }, props) => {
   // useEffect(() => {
   //   var w = Math.max(
   //     document.documentElement.clientWidth,
@@ -118,14 +118,17 @@ const RadarChart2 = props => {
   //   console.log("screen width:", w);
   // });
 
+  console.log(userData);
+  console.log(data);
+
   return (
     <div className="chartField">
       <Radar
-        data={data}
+        data={userData}
         options={{
           title: {
             display: true,
-            text: data.userName,
+            text: userData.userName,
             fontSize: 25
           },
           legend: {
@@ -152,6 +155,8 @@ const RadarChart2 = props => {
 };
 
 // export default RadarChart2;
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  userData: state.userData
+});
 
 export default connect(mapStateToProps, { getData })(RadarChart2);
