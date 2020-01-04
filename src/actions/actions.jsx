@@ -1,6 +1,6 @@
 // import axios from "axios";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
-import { data } from "../dummycomps/Data.jsx";
+import { data } from "../dummycomps/Data.jsx"; //can remove after api is set up
 
 //var names with all caps lock represents global variables
 export const GLOBAL_VAR_1 = "GLOBAL_VAR_1";
@@ -51,15 +51,7 @@ const testInfo = {
   testPass: "Password"
 };
 
-// export const getData = (event, credentials) => dispatch => {
-//   dispatch({ type: GETDATASTART });
-//   axiosWithAuth()
-//     .get(apiData, credentials)
-//     .then(res => dispatch({ type: GETDATASUCCESS, payload: res.data.payload }))
-//     .catch(err => {
-//       return dispatch({ type: GETDATAFAIL, payload: err });
-//     });
-// };
+//===delete above here once api is up...
 
 //login actions
 export const login = (event, credentials) => dispatch => {
@@ -94,17 +86,25 @@ export const register = (event, credentials) => dispatch => {
 };
 
 //get data from api
-export const getData = () => dispatch => {
+export const getData = dummyStuff => dispatch => {
+  //====
+  if (!dummyStuff.userName) {
+    var dummyData = data;
+  } else {
+    var dummyData = dummyStuff;
+  }
+  //====
   dispatch({ type: GETDATASTART });
   axiosWithAuth()
     .get(apiData)
     .then(res => {
-      console.log("actions > getData > res:", res);
-      console.log("getData.then, data: ", data);
       // dispatch({ type: GETDATASUCCESS, payload: res.data });
-      console.log("CHANGE getData.then TO THE CORRECT API!!!");
+      console.log(
+        "CHANGE getData.then TO THE CORRECT API!!!\n dummyData:",
+        dummyData
+      );
       //using the below FOR NOW. CHANGE LATER!!!
-      dispatch({ type: GETDATASUCCESS, payload: data });
+      dispatch({ type: GETDATASUCCESS, payload: dummyData });
     })
     .catch(err => {
       console.log("actions > getData.err:", err);
@@ -114,11 +114,16 @@ export const getData = () => dispatch => {
 
 //Add data
 export const addData = (event, newData) => dispatch => {
+  console.log("addData starting....");
   event.preventDefault();
   dispatch({ type: ADDDATASTART });
   axiosWithAuth()
-    .post(apiData, newData)
-    .then(res => dispatch({ type: ADDDATASUCCESS, payload: res.data.payload }))
+    .post(`${apiData}/posts`, newData)
+    .then(res => {
+      console.log("CHANGE addData.then to THE CORRECT API!!!!", newData);
+      dispatch({ type: ADDDATASUCCESS, payload: newData }); //using this until API works
+      // dispatch({ type: ADDDATASUCCESS, payload: res.data.payload })
+    })
     .catch(err => {
       console.log("actions > addData.err: ", err);
       return dispatch({ type: ADDDATAFAIL, payload: err });

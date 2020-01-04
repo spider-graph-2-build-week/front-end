@@ -155,16 +155,50 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         err: ""
       };
     case ADDDATASUCCESS:
+      let newDataId = state.userData.datasets.length.toString();
+      console.log(
+        `ADDDATASUCCESS>\n`,
+        `newDataId:${newDataId}`,
+        `payload: ${payload}`
+      );
+      //
+      let newDataInput = {
+        id: newDataId,
+        label: payload.label,
+        data: payload.data,
+        backgroundColor: "black",
+        borderColor: "black"
+      };
+      //
+      console.log(state.userData.datasets);
+      console.log(newDataInput);
       return {
-        ...state,
+        ...state, //spread operator
         err: "",
         isAdding: false,
         reFetch: !state.reFetch,
         newData: {
           label: "",
           data: []
+        },
+        //only doing the below until API is up and running....
+        userData: {
+          ...state.userData,
+          datasets: [
+            ...state.userData.datasets, //all previous info
+            {
+              id: newDataId,
+              label: payload.label,
+              data: payload.data,
+              backgroundColor: "black",
+              borderColor: "black"
+            } //new data
+
+            //  {newDataInput} //new data]
+          ]
         }
       };
+
     case ADDDATAFAIL:
       return {
         ...state,
@@ -219,17 +253,17 @@ export const rootReducer = (state = initialState, { type, payload }) => {
     //===Handle Change=====
     case HANDLECHANGE:
       console.log(
-        "handle..newdataset, reducer:",
-        payload, //all "input" details
-        payload.target.name, //input field name
-        payload.target.value, //input
-        payload.form, //"newData" from handleChange
-        payload.target.id, //gives the index #
-        state.newData
+        "handle..newdataset, reducer:\n",
+        `payload: ${payload}\n`, //all "input" details
+        `.name: ${payload.target.name}\n`, //input field name
+        `.value: ${payload.target.value}\n`, //input
+        `.form: ${payload.form}\n`, //"newData" from handleChange
+        `.id: ${payload.target.id}\n`, //gives the index #
+        `state.newData: ${state.newData}\n`,
+        `state: ${state.newData}\n`
         // ...state
       );
       const loc = payload.target.id;
-      console.log("newData.data", state);
       return {
         ...state,
         [payload.form]:
@@ -245,36 +279,32 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     case HANDLENEWDATASET:
       let branchLength = state.userData.labels.length;
+      /*
       console.log(
-        "reducer.HANDLENEWDATASET> ..name, ..value, ..form, ..id, ..labels:\n",
+        "reducer.HANDLENEWDATASET>\n",
         // payload, //all "input" details
         `..name: ${payload.target.name}\n`, //input field name
         `..value: ${payload.target.value}\n`, //input
         `.. form: ${payload.form}\n`, //"newData" from handleChange
         `..id: ${payload.target.id}\n`, //gives the index #
-        `..userData.labels: ${state.userData.labels}\n`
-        // ...state
+        `state: ${state}\n`
       );
-      console.log(
-        "reducer.HANDLENEWDATASET> userData.branch length:",
-        state.userData.labels.length
-      );
+      */
       if (state.newData.data.length === 0) {
         for (let i = 0; i < branchLength; i++) {
           state.newData.data[i] = 0;
         }
       }
-      console.log(state.newData.data);
       return {
-        ...state[payload.form],
+        ...state,
         newData: {
-          ...state[payload.form].newData,
+          ...state.newData,
           data: state.newData.data.map((dataVal, index) => {
-            console.log("reducer.data...", dataVal);
-            if (index === payload.target.id) {
+            // console.log("reducer.data...", dataVal, index, payload.target.id);
+            if (index == payload.target.id) {
+              console.log("index matches!!");
               return payload.target.value;
             }
-            //
             return dataVal;
           })
         }
