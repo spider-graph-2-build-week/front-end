@@ -42,9 +42,12 @@ const apiBase = "https://spider-graph-bw.herokuapp.com/api/auth";
 const apiRegister = `${apiBase}/register`;
 const apiLogin = `${apiBase}/login`;
 // const apiData = `${apiBase}/data`;
+// const apiPosts = `${apiBase}/
 
 //using this for now. change after api is set up correctly
-const apiData = "https://jsonplaceholder.typicode.com/todos/1";
+const apiDummy = "https://jsonplaceholder.typicode.com/";
+const apiData = `${apiDummy}todos/1`;
+const apiPosts = `${apiDummy}posts/1`;
 
 const testInfo = {
   testName: "Steve",
@@ -114,16 +117,17 @@ export const getData = dummyStuff => dispatch => {
 
 //Add data
 export const addData = (event, newData) => dispatch => {
-  console.log("addData starting....");
   event.preventDefault();
   dispatch({ type: ADDDATASTART });
   axiosWithAuth()
+    // .post(`${apiPost}`,newData)
+    // .then(res=> dispatch({type: ADDDATASUCCESS, payload: res.data.payload}))
     .post(`${apiData}/posts`, newData)
     .then(res => {
-      console.log("CHANGE addData.then to THE CORRECT API!!!!", newData);
-      dispatch({ type: ADDDATASUCCESS, payload: newData }); //using this until API works
-      // dispatch({ type: ADDDATASUCCESS, payload: res.data.payload })
+      console.log("=======\nFIX actions> addData!!!!\n=======");
+      dispatch({ type: ADDDATASUCCESS, payload: newData });
     })
+    //
     .catch(err => {
       console.log("actions > addData.err: ", err);
       return dispatch({ type: ADDDATAFAIL, payload: err });
@@ -132,6 +136,7 @@ export const addData = (event, newData) => dispatch => {
 
 //Add extra branch
 export const addBranch = (event, newBranch) => dispatch => {
+  console.log("addBranch:", event, newBranch);
   event.preventDefault();
   dispatch({ type: ADDBRANCHSTART });
   axiosWithAuth()
@@ -167,24 +172,6 @@ export const handleChange = (event, formType) => {
     payload: { target: event.target, form: formType }
   };
 };
-export const handleNewDataset = (event, formType) => {
-  console.log(
-    `actions.jsx > handleChange > formType, event.target}:`,
-    formType,
-    event.target
-  );
-  return {
-    type: HANDLENEWDATASET,
-    payload: { target: event.target, form: formType }
-  };
-};
-export const handleChange_newBranch = (event, formType) => {
-  return {
-    type: HANDLECHANGE_NEWBRANCH,
-    payload: { target: event.target, form: formType }
-  };
-};
-
 export const logout = () => dispatch => {
   localStorage.clear();
   dispatch({ type: LOGOUT });
@@ -194,9 +181,15 @@ export const setData = list => ({
   payload: list
 });
 export const deleteUnit = unit => dispatch => {
+  // console.log(`unit:`, unit, `\n.id:,`, unit.id);
+  //unit = {id: #, label: '', data: [], others...}
   axiosWithAuth()
-    .delete(`${apiData}/${unit.id}`)
-    .then(res => dispatch({ type: DELETEUNIT, payload: res.data.payload }))
+    // .delete(`${apiData}/${unit.id}`)
+    // .then(res => dispatch({ type: DELETEUNIT, payload: res.data.payload }))
+    //-----
+    .delete(apiPosts)
+    .then(res => dispatch({ type: DELETEUNIT, payload: unit }))
+    //-----
     .catch(err => {
       console.log("actions > deleteUnit.err: ", err);
     });

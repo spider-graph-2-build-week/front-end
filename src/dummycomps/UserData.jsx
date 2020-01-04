@@ -14,8 +14,6 @@ const UserData = ({ userData, startEdit, deleteUnit, state, derpData }) => {
     `derp: ${derpData}`
   );
   console.log(datasets, datasets.lenght);
-  var sizeDerp = Object.keys(datasets).length;
-  console.log(sizeDerp);
   return (
     <div>
       <h3>UserData:</h3>
@@ -28,13 +26,11 @@ const UserData = ({ userData, startEdit, deleteUnit, state, derpData }) => {
           </span>
         ))}
       </div>
-      {!sizeDerp ? (
+      {!datasets ? (
         <h5>Loading...</h5>
       ) : (
-        // console.log("datasets.length is ")
         <ul>
           {datasets.map(dataset => (
-            // {Object.keys(datasets).map(dataset => (
             <li key={dataset.id} onClick={() => startEdit(dataset)}>
               <button
                 className="delete"
