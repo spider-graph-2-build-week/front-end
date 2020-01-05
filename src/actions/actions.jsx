@@ -160,9 +160,15 @@ export const startEdit = () => ({
   type: EDITDATASTART
 });
 export const saveEdit = data => dispatch => {
+  console.log("actions>saveEdit:\n", data);
   axiosWithAuth()
-    .put(`${apiData}/${data.id}`, data)
-    .then(res => dispatch({ type: EDITDATASUCCESS, payload: res.data.payload }))
+    .put(`${apiPosts}`, data)
+    .then(res => {
+      console.log("actions>saveEdit Success!,\n", data, "\nres:", res);
+      dispatch({ type: EDITDATASUCCESS, payload: data });
+      console.log("!===============CHANGE actions> saveEdit================!");
+      // dispatch({ type: EDITDATASUCCESS, payload: res.data.payload })
+    })
     .catch(err => {
       console.log("actions > saveEdit.err:", err);
       return dispatch({ type: EDITDATAFAIL, payload: err });

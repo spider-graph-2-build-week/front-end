@@ -32,7 +32,7 @@ const EditData = ({
       <form
         onSubmit={e => {
           e.preventDefault();
-          saveEdit("id...");
+          saveEdit(dataToEdit);
         }}
       >
         <input
@@ -43,7 +43,7 @@ const EditData = ({
           value={dataToEdit.userName} //only shows 0 id now
         />
         <input
-          name="dataSetLabel"
+          name="dataLabel"
           type="text"
           className="editDataset-name"
           onChange={e => handleChange(e, "editData")}
@@ -55,7 +55,7 @@ const EditData = ({
               <div>
                 <input
                   id={index}
-                  name={`branch-edit`}
+                  name={`branches`}
                   type="text"
                   className="editData-input"
                   value={dataToEdit.branches[index]}
@@ -67,7 +67,7 @@ const EditData = ({
                 :
                 <input
                   id={index}
-                  name={`data-edit`}
+                  name={`datasets`}
                   type="number"
                   min="0"
                   max="100"

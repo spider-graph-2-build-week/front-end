@@ -231,6 +231,9 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       }
       */
       //forcing state.data to change for now============================================
+      console.log(
+        "=============CHANGE reducer>ADDBRANCHSUCCESS=================="
+      );
       return {
         ...state, //spread operator
         err: "",
@@ -264,12 +267,46 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         }
       };
     case EDITDATASUCCESS:
+      console.log(payload);
+      /*
       return {
         ...state,
         err: "",
         isEditing: false,
         dataToEdit: {},
         reFetch: !state.reFetch
+      };
+      */
+      console.log(
+        "=============CHANGE reducer>EDITDATASUCCESS=================="
+      );
+      const id1 = 0;
+      return {
+        ...state, //spread operator
+        err: "",
+        isAdding: false,
+        reFetch: !state.reFetch,
+        newData: {
+          label: "",
+          data: []
+        },
+        isEditing: false,
+        userData: {
+          ...state.userData,
+          userName: payload.userName,
+          labels: payload.branches,
+          datasets: state.userData.datasets.map((dataset, index) => {
+            if (index === id1) {
+              console.log("index matches!!!", dataset);
+              return {
+                ...state.userData.datasets[index],
+                label: payload.dataLabel,
+                data: payload.datasets
+              };
+            }
+            return dataset;
+          })
+        }
       };
     case EDITDATAFAIL:
       return {
@@ -304,12 +341,14 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       switch (
         payload.form //different management depending on the form
       ) {
-        case "newBranch": //checks payload.form for 'newBranch'
+        //checks payload.form for 'newBranch'
+        case "newBranch":
           return {
             ...state,
             newBranch: payload.target.value
           };
-        case "newData": //checks payload.form for 'newData'
+        //checks payload.form for 'newData'
+        case "newData":
           return {
             ...state,
             [payload.form]:
@@ -332,32 +371,38 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                       return dataVal;
                     })
                   })
-          }; //===end case "newData":
-        case "editData": //checks payload.form for 'editData'
-          console.log("editData.payload:", payload.target.name);
-          switch (payload.target.name) {
-            case "userName":
-              console.log("editData>username");
-              return {
-                ...state,
-                dataToEdit: {
-                  ...state.dataToEdit,
-                  userName: payload.target.value
-                }
-              };
-
-            case "dataSetLabel":
-              console.log("editData>dataSetLabel");
-              return state;
-            case "branch-edit":
-              console.log("editData>branch-edit");
-              return state;
-            case "data-edit":
-              console.log("editData>data-edit");
-              return state;
-            default:
-              console.log("editData>default");
-              return state;
+          }; //===end case "newData"======
+        //checks payload.form for 'editData'
+        case "editData":
+          if (
+            payload.target.name !== "datasets" &&
+            payload.target.name !== "branches"
+          ) {
+            //if target.name != branches OR datasets...
+            return {
+              ...state,
+              dataToEdit: {
+                ...state.dataToEdit,
+                [payload.target.name]: payload.target.value
+              }
+            };
+          } else {
+            //if target.name = branches OR datasets...
+            return {
+              ...state,
+              dataToEdit: {
+                ...state.dataToEdit,
+                [payload.target.name]: state.dataToEdit[
+                  payload.target.name
+                ].map((dataVal, index) => {
+                  if (index == payload.target.id) {
+                    console.log("index matches!!");
+                    return payload.target.value;
+                  }
+                  return dataVal;
+                })
+              }
+            };
           }
         default:
           console.log("default case");
