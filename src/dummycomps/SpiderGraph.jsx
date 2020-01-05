@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 
 import RadarChart2 from "../components/RadarChart2";
 import DataSubmission from "./DataSubmission";
+import EditData from "../components/dataHandling/EditData";
 
 import "../css/Data.css";
 
-const SpiderGraph = ({ reFetch }) => {
+const SpiderGraph = ({ reFetch, isEditing }) => {
   // useEffect(() => {
   //   console.log("SpiderGraph > useEffect > updated;", reFetch);
   // }, [reFetch]);
@@ -19,15 +20,22 @@ const SpiderGraph = ({ reFetch }) => {
   });
 
   return (
-    <div className="spiderGraph">
-      <DataSubmission />
-      <RadarChart2 />
-    </div>
+    <section>
+      {!isEditing ? (
+        <div className="spiderGraph">
+          <DataSubmission />
+          <RadarChart2 />
+        </div>
+      ) : (
+        <EditData />
+      )}
+    </section>
   );
 };
 
 const mapStateToProps = state => ({
-  reFetch: state.reFetch
+  reFetch: state.reFetch,
+  isEditing: state.isEditing
 });
 
 export default connect(mapStateToProps)(SpiderGraph);

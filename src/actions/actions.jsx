@@ -46,7 +46,7 @@ const apiLogin = `${apiBase}/login`;
 
 //using this for now. change after api is set up correctly
 const apiDummy = "https://jsonplaceholder.typicode.com/";
-const apiData = `${apiDummy}todos/1`;
+const apiData = `${apiDummy}todos/`;
 const apiPosts = `${apiDummy}posts/1`;
 
 const testInfo = {
@@ -99,7 +99,7 @@ export const getData = dummyStuff => dispatch => {
   //====
   dispatch({ type: GETDATASTART });
   axiosWithAuth()
-    .get(apiData)
+    .get(`${apiData}/1`)
     .then(res => {
       // dispatch({ type: GETDATASUCCESS, payload: res.data });
       console.log(
@@ -122,12 +122,13 @@ export const addData = (event, newData) => dispatch => {
   axiosWithAuth()
     // .post(`${apiPost}`,newData)
     // .then(res=> dispatch({type: ADDDATASUCCESS, payload: res.data.payload}))
-    .post(`${apiData}/posts`, newData)
+    //REMOVE the below; KEEP the above=====
+    .post(`${apiData}1/posts`, newData)
     .then(res => {
       console.log("=======\nFIX actions> addData!!!!\n=======");
       dispatch({ type: ADDDATASUCCESS, payload: newData });
     })
-    //
+    //=====
     .catch(err => {
       console.log("actions > addData.err: ", err);
       return dispatch({ type: ADDDATAFAIL, payload: err });
@@ -135,13 +136,19 @@ export const addData = (event, newData) => dispatch => {
 };
 
 //Add extra branch
-export const addBranch = (event, newBranch) => dispatch => {
-  console.log("addBranch:", event, newBranch);
+export const addBranch = (event, newBranch, userData) => dispatch => {
   event.preventDefault();
   dispatch({ type: ADDBRANCHSTART });
   axiosWithAuth()
-    .post(apiData, newBranch)
-    .then(res => dispatch({ type: ADDBRANCHSTART, payload: res.data.payload }))
+    // .post(`${apiPost}`, newBranch)
+    // .then(res => dispatch({ type: ADDBRANCHSTART, payload: res.data.payload }))
+    //REMOVE the below; KEEP the above=====
+    .post(`${apiData}1/posts`, userData) //userData just to get it to pass for now...
+    .then(res => {
+      console.log("=======\nFIX actions> addData!!!!\n=======");
+      dispatch({ type: ADDBRANCHSUCCESS, payload: newBranch });
+    })
+    //=====
     .catch(err => {
       console.log("actions > addBranch.err:", err);
       return dispatch({ type: ADDBRANCHFAIL, payload: err });
@@ -149,14 +156,19 @@ export const addBranch = (event, newBranch) => dispatch => {
 };
 
 //Edit existing data
-export const startEdit = id => ({
-  type: EDITDATASTART,
-  payload: id
+export const startEdit = () => ({
+  type: EDITDATASTART
 });
 export const saveEdit = data => dispatch => {
+  console.log("actions>saveEdit:\n", data);
   axiosWithAuth()
-    .put(`${apiData}/${data.id}`, data)
-    .then(res => dispatch({ type: EDITDATASUCCESS, payload: res.data.payload }))
+    .put(`${apiPosts}`, data)
+    .then(res => {
+      console.log("actions>saveEdit Success!,\n", data, "\nres:", res);
+      dispatch({ type: EDITDATASUCCESS, payload: data });
+      console.log("!===============CHANGE actions> saveEdit================!");
+      // dispatch({ type: EDITDATASUCCESS, payload: res.data.payload })
+    })
     .catch(err => {
       console.log("actions > saveEdit.err:", err);
       return dispatch({ type: EDITDATAFAIL, payload: err });

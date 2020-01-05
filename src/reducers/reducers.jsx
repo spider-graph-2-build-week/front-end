@@ -62,7 +62,12 @@ const initialState = {
   initialData: {
     data: []
   },
-  dataToEdit: {},
+  dataToEdit: {
+    userName: "",
+    dataLabel: "",
+    branches: [],
+    datasets: []
+  },
   //other categories...
   reFetch: false
 };
@@ -215,16 +220,29 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         err: ""
       };
     case ADDBRANCHSUCCESS:
+      console.log(payload);
+      /*
       return {
         ...state, //spread operator
         err: "",
         isNewBranch: false,
         reFetch: !state.reFetch,
         newBranch: "",
-        //forcing data to change for now============================================
+      }
+      */
+      //forcing state.data to change for now============================================
+      console.log(
+        "=============CHANGE reducer>ADDBRANCHSUCCESS=================="
+      );
+      return {
+        ...state, //spread operator
+        err: "",
+        isNewBranch: false,
+        reFetch: !state.reFetch,
+        newBranch: "",
         userData: {
           ...state.userData,
-          labels: [...state.userData.labels, state.newBranch]
+          labels: [...state.userData.labels, payload]
         }
       };
     case ADDBRANCHFAIL:
@@ -235,21 +253,60 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //======editing data from api======
     case EDITDATASTART:
+      console.log("EDITDATASTART:\n", payload);
+      const id = 0;
       return {
         ...state,
         isEditing: true,
         err: "",
-        dataToEdit: state.userData.datasets.find(
-          dataset => `${dataset.id}` === `${payload}`
-        )
+        dataToEdit: {
+          userName: state.userData.userName,
+          branches: state.userData.labels,
+          dataLabel: state.userData.datasets[id].label,
+          datasets: state.userData.datasets[id].data
+        }
       };
     case EDITDATASUCCESS:
+      console.log(payload);
+      /*
       return {
         ...state,
         err: "",
         isEditing: false,
         dataToEdit: {},
         reFetch: !state.reFetch
+      };
+      */
+      console.log(
+        "=============CHANGE reducer>EDITDATASUCCESS=================="
+      );
+      const id1 = 0;
+      return {
+        ...state, //spread operator
+        err: "",
+        isAdding: false,
+        reFetch: !state.reFetch,
+        newData: {
+          label: "",
+          data: []
+        },
+        isEditing: false,
+        userData: {
+          ...state.userData,
+          userName: payload.userName,
+          labels: payload.branches,
+          datasets: state.userData.datasets.map((dataset, index) => {
+            if (index === id1) {
+              console.log("index matches!!!", dataset);
+              return {
+                ...state.userData.datasets[index],
+                label: payload.dataLabel,
+                data: payload.datasets
+              };
+            }
+            return dataset;
+          })
+        }
       };
     case EDITDATAFAIL:
       return {
@@ -260,6 +317,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //===Handle Change=====
     case HANDLECHANGE:
+      /*
       console.log(payload);
       console.log(
         "handle..newdataset, reducer:\n",
@@ -271,6 +329,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         `state.newData: ${state.newData}\n`,
         `state: ${state}\n` // state
       );
+      */
       const loc = payload.target.id;
       let branchLength = state.userData.labels.length;
       if (state.newData.data.length === 0) {
@@ -282,14 +341,14 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       switch (
         payload.form //different management depending on the form
       ) {
-        case "newBranch": //checks payload.form for 'newBranch'
-          console.log("newBranch case");
+        //checks payload.form for 'newBranch'
+        case "newBranch":
           return {
             ...state,
             newBranch: payload.target.value
           };
-        case "newData": //checks payload.form for 'newData'
-          console.log("newData case");
+        //checks payload.form for 'newData'
+        case "newData":
           return {
             ...state,
             [payload.form]:
@@ -312,7 +371,39 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                       return dataVal;
                     })
                   })
-          }; //===end case "newData":
+          }; //===end case "newData"======
+        //checks payload.form for 'editData'
+        case "editData":
+          if (
+            payload.target.name !== "datasets" &&
+            payload.target.name !== "branches"
+          ) {
+            //if target.name != branches OR datasets...
+            return {
+              ...state,
+              dataToEdit: {
+                ...state.dataToEdit,
+                [payload.target.name]: payload.target.value
+              }
+            };
+          } else {
+            //if target.name = branches OR datasets...
+            return {
+              ...state,
+              dataToEdit: {
+                ...state.dataToEdit,
+                [payload.target.name]: state.dataToEdit[
+                  payload.target.name
+                ].map((dataVal, index) => {
+                  if (index == payload.target.id) {
+                    console.log("index matches!!");
+                    return payload.target.value;
+                  }
+                  return dataVal;
+                })
+              }
+            };
+          }
         default:
           console.log("default case");
           return state;
@@ -328,13 +419,6 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         error: ""
       };
     case DELETEUNIT:
-      // console.log("payload:", payload);
-      /*
-      return {
-        ...state,
-        reFetch: !state.reFetch
-      };
-      */
       return {
         ...state,
         reFetch: !state.reFetch,
