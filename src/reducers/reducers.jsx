@@ -62,7 +62,12 @@ const initialState = {
   initialData: {
     data: []
   },
-  dataToEdit: {},
+  dataToEdit: {
+    userName: "",
+    dataLabel: "",
+    branches: [],
+    datasets: []
+  },
   //other categories...
   reFetch: false
 };
@@ -215,16 +220,26 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         err: ""
       };
     case ADDBRANCHSUCCESS:
+      console.log(payload);
+      /*
       return {
         ...state, //spread operator
         err: "",
         isNewBranch: false,
         reFetch: !state.reFetch,
         newBranch: "",
-        //forcing data to change for now============================================
+      }
+      */
+      //forcing state.data to change for now============================================
+      return {
+        ...state, //spread operator
+        err: "",
+        isNewBranch: false,
+        reFetch: !state.reFetch,
+        newBranch: "",
         userData: {
           ...state.userData,
-          labels: [...state.userData.labels, state.newBranch]
+          labels: [...state.userData.labels, payload]
         }
       };
     case ADDBRANCHFAIL:
@@ -235,13 +250,18 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //======editing data from api======
     case EDITDATASTART:
+      console.log("EDITDATASTART:\n", payload);
+      const id = 0;
       return {
         ...state,
         isEditing: true,
         err: "",
-        dataToEdit: state.userData.datasets.find(
-          dataset => `${dataset.id}` === `${payload}`
-        )
+        dataToEdit: {
+          userName: state.userData.userName,
+          branches: state.userData.labels,
+          dataLabel: state.userData.datasets[id].label,
+          datasets: state.userData.datasets[id].data
+        }
       };
     case EDITDATASUCCESS:
       return {
@@ -260,6 +280,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //===Handle Change=====
     case HANDLECHANGE:
+      /*
       console.log(payload);
       console.log(
         "handle..newdataset, reducer:\n",
@@ -271,6 +292,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         `state.newData: ${state.newData}\n`,
         `state: ${state}\n` // state
       );
+      */
       const loc = payload.target.id;
       let branchLength = state.userData.labels.length;
       if (state.newData.data.length === 0) {
@@ -283,13 +305,11 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         payload.form //different management depending on the form
       ) {
         case "newBranch": //checks payload.form for 'newBranch'
-          console.log("newBranch case");
           return {
             ...state,
             newBranch: payload.target.value
           };
         case "newData": //checks payload.form for 'newData'
-          console.log("newData case");
           return {
             ...state,
             [payload.form]:
@@ -313,6 +333,32 @@ export const rootReducer = (state = initialState, { type, payload }) => {
                     })
                   })
           }; //===end case "newData":
+        case "editData": //checks payload.form for 'editData'
+          console.log("editData.payload:", payload.target.name);
+          switch (payload.target.name) {
+            case "userName":
+              console.log("editData>username");
+              return {
+                ...state,
+                dataToEdit: {
+                  ...state.dataToEdit,
+                  userName: payload.target.value
+                }
+              };
+
+            case "dataSetLabel":
+              console.log("editData>dataSetLabel");
+              return state;
+            case "branch-edit":
+              console.log("editData>branch-edit");
+              return state;
+            case "data-edit":
+              console.log("editData>data-edit");
+              return state;
+            default:
+              console.log("editData>default");
+              return state;
+          }
         default:
           console.log("default case");
           return state;
@@ -328,13 +374,6 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         error: ""
       };
     case DELETEUNIT:
-      // console.log("payload:", payload);
-      /*
-      return {
-        ...state,
-        reFetch: !state.reFetch
-      };
-      */
       return {
         ...state,
         reFetch: !state.reFetch,

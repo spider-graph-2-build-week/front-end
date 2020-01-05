@@ -8,6 +8,7 @@ import "../css/Data.css";
 import NewBranch from "../dummycomps/NewBranch";
 import NewDataSet from "../dummycomps/NewDataSet";
 import UserData from "../dummycomps/UserData";
+import EditData from "../components/dataHandling/EditData";
 
 import {
   setData,
@@ -26,7 +27,7 @@ const labelArr = data.labels;
 
 const DataSubmission = ({
   //mapStateToProps
-  editing,
+  isEditing,
   dataToEdit,
   newData,
   newBranch,
@@ -50,11 +51,16 @@ const DataSubmission = ({
   }, [reFetch]);
 
   const dropDown1 = "Drop Down 1";
-  // console.log("DataSubmission>userData:", userData);
   console.log("state:", state);
+  console.log("isEditing", isEditing);
   return (
     <div className="dataField-container">
       Data
+      {!isEditing ? (
+        <button onClick={() => startEdit()}>Edit Data</button>
+      ) : (
+        <button onClick={() => cancelEdit()}>Cancel Edit</button>
+      )}
       <DropdownButton
         title={dropDown1}
         id={`dropdown-variants-${dropDown1}`}
@@ -67,18 +73,17 @@ const DataSubmission = ({
             Point Limit
           </Dropdown.Item>
         </div>
+        {/* clean up below?? */}
       </DropdownButton>
       <section className="data-display">
-        {/* moved information into a component */}
         <UserData userData={userData} />
       </section>
-      {editing ? ( //if editing = true...
-        // add "editing" fields
-        <h3>editing...</h3>
+      {isEditing ? ( //if isEditing = true...
+        <section className="newDataset">
+          <EditData userData={userData} />
+        </section>
       ) : (
-        // if editing = false...
-        // add new data
-
+        // if isEditing = false...
         <section className="newDataset">
           <NewDataSet userData={userData} />
         </section>
@@ -92,7 +97,7 @@ const DataSubmission = ({
 
 const mapStateToProps = state => ({
   // data: state.chartData.datasets,
-  editing: state.isEditing,
+  isEditing: state.isEditing,
   dataToEdit: state.dataToEdit,
   newData: state.newData,
   newBranch: state.newBranch,

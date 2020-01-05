@@ -7,6 +7,7 @@ const NewBranch = ({
   //mapStateToProps...
   newData,
   newBranch,
+  userData,
   //import from actions...
   addBranch,
   handleChange
@@ -17,7 +18,7 @@ const NewBranch = ({
       NewBranch
       <form
         onSubmit={e => {
-          addBranch(e, addBranch);
+          addBranch(e, newBranch, userData);
         }}
       >
         <h3>New Branch</h3>
@@ -37,7 +38,8 @@ const NewBranch = ({
 const mapStateToProps = state => ({
   error: state.error,
   newBranch: state.newBranch,
-  newData: state.newData
+  newData: state.newData,
+  userData: state.userData
 });
 
 export default connect(mapStateToProps, { addBranch, handleChange })(NewBranch);
