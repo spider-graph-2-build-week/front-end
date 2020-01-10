@@ -1,6 +1,6 @@
 // import axios from "axios";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
-import { data } from "../dummycomps/Data.jsx"; //can remove after api is set up
+import { data, data2 } from "../dummycomps/Data.jsx"; //can remove after api is set up
 
 //var names with all caps lock represents global variables
 export const GLOBAL_VAR_1 = "GLOBAL_VAR_1";
@@ -38,9 +38,11 @@ export const LOGOUT = "LOGOUT";
 export const DELETEUNIT = "DELETEUNIT";
 export const CANCELEDIT = "CANCELEDIT";
 
-const apiBase = "https://spider-graph-bw.herokuapp.com/api/auth";
-const apiRegister = `${apiBase}/register`;
-const apiLogin = `${apiBase}/login`;
+const apiBase = "https://spider-graph-bw.herokuapp.com/api";
+const apiGet = "https://spider-graph-bw.herokuapp.com/api/graphs/1";
+const apiRegister = `${apiBase}/auth/register`;
+const apiLogin = `${apiBase}/auth/login`;
+// const apiGet = `${apiBase}/graphs/1`;
 // const apiData = `${apiBase}/data`;
 // const apiPosts = `${apiBase}/
 
@@ -59,6 +61,7 @@ const testInfo = {
 //login actions
 export const login = (event, credentials) => dispatch => {
   event.preventDefault();
+  console.log("login", credentials);
   dispatch({ type: LOGINSTART });
   axiosWithAuth()
     .post(apiLogin, credentials)
@@ -93,21 +96,25 @@ export const getData = dummyStuff => dispatch => {
   //====
   if (!dummyStuff.userName) {
     var dummyData = data;
+    var dummyData2 = data2;
+    var dummyReturn = [dummyData, dummyData2];
   } else {
     var dummyData = dummyStuff;
   }
   //====
+  console.log("getData start..");
   dispatch({ type: GETDATASTART });
   axiosWithAuth()
-    .get(`${apiData}/1`)
+    // .get(`${apiData}/1`)
+    .get(`${apiGet}`)
     .then(res => {
-      // dispatch({ type: GETDATASUCCESS, payload: res.data });
+      console.log("apiGet:", res.data, res);
       console.log(
         "CHANGE getData.then TO THE CORRECT API!!!\n dummyData:",
         dummyData
       );
-      //using the below FOR NOW. CHANGE LATER!!!
-      dispatch({ type: GETDATASUCCESS, payload: dummyData });
+      // dispatch({ type: GETDATASUCCESS, payload: res.data });
+      dispatch({ type: GETDATASUCCESS, payload: dummyReturn });
     })
     .catch(err => {
       console.log("actions > getData.err:", err);
@@ -138,6 +145,7 @@ export const addData = (event, newData) => dispatch => {
 //Add extra branch
 export const addBranch = (event, newBranch, userData) => dispatch => {
   event.preventDefault();
+  console.log("addBranch", newBranch);
   dispatch({ type: ADDBRANCHSTART });
   axiosWithAuth()
     // .post(`${apiPost}`, newBranch)

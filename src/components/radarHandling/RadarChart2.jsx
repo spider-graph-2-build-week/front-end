@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { Radar } from "react-chartjs-2";
 import { connect } from "react-redux";
 
-import { data } from "../dummycomps/Data";
-import { getData } from "../actions/actions";
+import { data } from "../../dummycomps/Data";
+import { getData } from "../../actions/actions";
 
-import "../css/Data.css";
+import "../../css/Data.css";
 
 console.log(data);
 

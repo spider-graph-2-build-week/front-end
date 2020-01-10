@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import RadarChart2 from "../components/RadarChart2";
-import DataSubmission from "./DataSubmission";
-import EditData from "../components/dataHandling/EditData";
+import RadarChart2 from "./RadarChart2";
+import DataSubmission from "../dataHandling/DataSubmission";
+import EditData from "../dataHandling/EditData";
 
-import "../css/Data.css";
+import "../../css/Data.css";
 
 const SpiderGraph = ({ reFetch, isEditing }) => {
   // useEffect(() => {

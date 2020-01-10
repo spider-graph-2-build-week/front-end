@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { ButtonToolbar, DropdownButton, Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 
-import { data } from "../dummycomps/Data";
-import "../css/Data.css";
+import { data } from "../../dummycomps/Data";
+import "../../css/Data.css";
 
-import NewBranch from "../dummycomps/NewBranch";
-import NewDataSet from "../dummycomps/NewDataSet";
-import UserData from "../dummycomps/UserData";
-import EditData from "../components/dataHandling/EditData";
+import NewBranch from "./NewBranch";
+import NewDataSet from "./NewDataSet";
+import UserData from "./UserData";
+import EditData from "./EditData";
 
 import {
   setData,
@@ -21,41 +21,32 @@ import {
   cancelEdit,
   getData,
   addBranch
-} from "../actions/actions";
+} from "../../actions/actions";
 
 const labelArr = data.labels;
 
 const DataSubmission = ({
   //mapStateToProps
   isEditing,
-  dataToEdit,
-  newData,
-  newBranch,
   reFetch,
   userData,
-  state,
   //import from '../actions/actions
-  setData,
-  deleteUnit,
   startEdit,
-  saveEdit,
-  handleChange,
-  addData,
-  logout,
   cancelEdit,
-  getData
+  getData,
+  userData2
 }) => {
   useEffect(() => {
     getData(userData);
-    console.log("DataSumbission>getData", userData);
   }, [reFetch]);
+  // useEffect(() => {
+  //   getData(userData2);
+  //   console.log("DataSumbission>getData", userData2.graphs);
+  // }, [reFetch]);
 
   const dropDown1 = "Drop Down 1";
-  console.log("state:", state);
-  console.log("isEditing", isEditing);
   return (
     <div className="dataField-container">
-      Data
       {!isEditing ? (
         <button onClick={() => startEdit()}>Edit Data</button>
       ) : (
@@ -65,6 +56,7 @@ const DataSubmission = ({
         title={dropDown1}
         id={`dropdown-variants-${dropDown1}`}
         key={dropDown1}
+        className="dropdown-button"
       >
         <div className="dropdown-option-show">
           <Dropdown.Item eventKey="1">%</Dropdown.Item>
@@ -103,7 +95,8 @@ const mapStateToProps = state => ({
   newBranch: state.newBranch,
   reFetch: state.reFetch,
   userData: state.userData,
-  state: state
+  state: state,
+  userData2: state.userData2
 });
 
 export default connect(mapStateToProps, {

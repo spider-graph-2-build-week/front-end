@@ -5,7 +5,7 @@ import {
   addData,
   handleChange
   // handleNewDataset
-} from "../actions/actions";
+} from "../../actions/actions";
 
 const NewDataSet = ({
   //props passed down...
@@ -40,9 +40,9 @@ const NewDataSet = ({
         />
         <div className="newDataset-data">
           {labels.map((dataValue, index) => {
-            // console.log("labels.map", newData);
             return (
               <input
+                key={`newDataSet${index}`}
                 id={index}
                 name={`data`}
                 type="number"
@@ -52,7 +52,6 @@ const NewDataSet = ({
                 className="newData-input"
                 value={newData.data[index]}
                 onChange={e => {
-                  // console.log(e.target, index);
                   handleChange(e, "newData");
                 }}
               />
