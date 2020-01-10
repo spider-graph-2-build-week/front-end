@@ -32,13 +32,26 @@ import {
   CANCELEDIT
 } from "../actions/actions";
 
+export const pathNames = {
+  Home: "/",
+  Login: "/login",
+  SpiderChart: "/spiderchart",
+  Register: "/register",
+  DataSubmission: "/submission",
+  SpiderGraph: "/spiderGraph",
+  GraphProfiles: "/graphProfiles"
+};
+
 const initialState = {
   error: "",
   //logging in
   isLoggingIn: false,
   isRegistering: false,
   didRegister: false,
-  credentials: [],
+  credentials: {
+    username: "",
+    password: ""
+  },
   token: "",
   //getting data from API or similar
   isFetching: false,
@@ -47,6 +60,24 @@ const initialState = {
     userName: "",
     labels: [],
     datasets: [{ id: "", label: "", data: [] }]
+  },
+  userData2: {
+    graphs: [
+      {
+        id: "",
+        title: "",
+        description: "",
+        userName: "",
+        labels: [],
+        datasets: [
+          {
+            id: "",
+            dataset_label: "",
+            data: []
+          }
+        ]
+      }
+    ]
   },
   //adding data
   isAdding: false,
@@ -143,7 +174,8 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         error: "",
         isFetching: false,
-        userData: payload
+        userData: payload[0],
+        userData2: payload[1]
       };
     case GETDATAFAIL:
       return {
@@ -234,6 +266,8 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       console.log(
         "=============CHANGE reducer>ADDBRANCHSUCCESS=================="
       );
+      const graphsInd = 0;
+      const tempLabels = state.userData2.graphs[graphsInd].labels;
       return {
         ...state, //spread operator
         err: "",
@@ -243,6 +277,19 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         userData: {
           ...state.userData,
           labels: [...state.userData.labels, payload]
+        },
+        userData2: {
+          ...state.userData2,
+          graphs: [
+            ...state.userData2.graphs.map((graph, index) => {
+              if (index === graphsInd) {
+                return {
+                  ...state.userData2.graphs[index],
+                  labels: [tempLabels, payload]
+                };
+              }
+            })
+          ]
         }
       };
     case ADDBRANCHFAIL:
@@ -317,20 +364,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
       };
     //===Handle Change=====
     case HANDLECHANGE:
-      /*
-      console.log(payload);
-      console.log(
-        "handle..newdataset, reducer:\n",
-        `payload: ${payload}\n`, //all "input" details
-        `.name: ${payload.target.name}\n`, //input field name
-        `.value: ${payload.target.value}\n`, //input
-        `.form: ${payload.form}\n`, //"newData" from handleChange
-        `.id: ${payload.target.id}\n`, //gives the index #
-        `state.newData: ${state.newData}\n`,
-        `state: ${state}\n` // state
-      );
-      */
-      const loc = payload.target.id;
+      //
       let branchLength = state.userData.labels.length;
       if (state.newData.data.length === 0) {
         for (let i = 0; i < branchLength; i++) {
@@ -404,9 +438,20 @@ export const rootReducer = (state = initialState, { type, payload }) => {
               }
             };
           }
+        case "credentials":
+          return {
+            ...state,
+            [payload.form]: {
+              ...state[payload.form],
+              [payload.target.name]: payload.target.value
+            }
+          }; //===end case "credentials"======
         default:
-          console.log("default case");
-          return state;
+          console.log("default: payload", payload);
+          return {
+            ...state,
+            [payload.form]: payload.target.value
+          };
       }
 
     //==========================

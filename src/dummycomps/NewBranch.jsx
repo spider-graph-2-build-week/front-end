@@ -12,7 +12,7 @@ const NewBranch = ({
   addBranch,
   handleChange
 }) => {
-  console.log(newBranch);
+  console.log(userData);
   return (
     <div>
       NewBranch

@@ -10,6 +10,12 @@
 .dropdown-option-show {
   background: lightblue;
   border: 1px solid brown;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+}
+.dropdown-button {
+  width: 150px;
 }
 
 /* ===Spidergraph Data Section=== */
@@ -105,4 +111,13 @@ button {
 .chartField {
   width: 60%;
   background: rgb(157, 219, 181);
+}
+
+.graph-details {
+  border: 1px brown solid;
+  background: rgb(212, 238, 212);
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
 }

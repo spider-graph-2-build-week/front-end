@@ -5,15 +5,7 @@ import { startEdit, deleteUnit } from "../actions/actions";
 
 const UserData = ({ userData, startEdit, deleteUnit, state, derpData }) => {
   const { labels, datasets } = userData;
-  console.log(
-    "UserData>",
-    `userData: ${userData}\n`,
-    `labels: ${labels}\n`,
-    `datasets: ${datasets}\n`,
-    `state:${state.userData}`,
-    `derp: ${derpData}`
-  );
-  console.log(datasets, datasets.lenght);
+  console.log("userData:", userData);
   return (
     <div>
       <h3>UserData:</h3>
@@ -57,7 +49,6 @@ const UserData = ({ userData, startEdit, deleteUnit, state, derpData }) => {
 
 const mapStateToProps = state => ({
   error: state.error,
-  userData: state.userData,
   state: state,
   derpData: state.userData.datasets
 });
