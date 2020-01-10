@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./css/App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import RadarChart2 from "./components/RadarChart2";
+import RadarChart2 from "./components/radarHandling/RadarChart2";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import { logout } from "./actions/actions";
@@ -10,11 +10,11 @@ import { pathNames } from "./reducers/reducers";
 import PrivateRoute from "./utils/PrivateRoute";
 
 //component testing...
-import Register from "./dummycomps/Registration";
-import DataSubmission from "./dummycomps/DataSubmission";
-import SpiderGraph from "./dummycomps/SpiderGraph";
+import Register from "./components/Registration";
+import DataSubmission from "./components/dataHandling/DataSubmission";
+import SpiderGraph from "./components/radarHandling/SpiderGraph";
 import { connect } from "react-redux";
-import GraphProfiles from "./dummycomps/GraphProfiles";
+import GraphProfiles from "./components/radarHandling/GraphProfiles";
 
 // function App() {
 const App = ({ logout, reFetch }) => {

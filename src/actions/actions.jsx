@@ -145,6 +145,7 @@ export const addData = (event, newData) => dispatch => {
 //Add extra branch
 export const addBranch = (event, newBranch, userData) => dispatch => {
   event.preventDefault();
+  console.log("addBranch", newBranch);
   dispatch({ type: ADDBRANCHSTART });
   axiosWithAuth()
     // .post(`${apiPost}`, newBranch)

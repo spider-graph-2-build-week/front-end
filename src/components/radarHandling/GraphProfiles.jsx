@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import "../css/Data.css";
+import "../../css/Data.css";
 
-import { getData } from "../actions/actions";
+import { getData } from "../../actions/actions";
 
 const GraphProfiles = ({ userData2, reFetch, getData }) => {
   useEffect(() => {

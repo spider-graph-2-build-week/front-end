@@ -252,7 +252,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         err: ""
       };
     case ADDBRANCHSUCCESS:
-      console.log(payload);
+      console.log("addbranch:", payload);
       /*
       return {
         ...state, //spread operator
@@ -293,6 +293,7 @@ export const rootReducer = (state = initialState, { type, payload }) => {
         }
       };
     case ADDBRANCHFAIL:
+      console.log("addBranchFail");
       return {
         ...state,
         isNewBranch: false,

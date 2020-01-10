@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 //custom files..
 import "../css/App.css";
 import Login from "./Login";
-import Register from "../dummycomps/Registration";
+import Register from "./Registration";
 import { pathNames } from "../reducers/reducers";
 
 console.log(pathNames);

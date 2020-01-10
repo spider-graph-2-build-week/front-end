@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { addBranch, handleChange } from "../actions/actions";
+import { addBranch, handleChange } from "../../actions/actions";
 
 const NewBranch = ({
   //mapStateToProps...

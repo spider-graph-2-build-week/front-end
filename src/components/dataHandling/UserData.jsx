@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { startEdit, deleteUnit } from "../actions/actions";
+import { startEdit, deleteUnit } from "../../actions/actions";
 
 const UserData = ({ userData, startEdit, deleteUnit, state, derpData }) => {
   const { labels, datasets } = userData;
@@ -23,7 +23,7 @@ const UserData = ({ userData, startEdit, deleteUnit, state, derpData }) => {
       ) : (
         <ul>
           {datasets.map(dataset => (
-            <li key={dataset.id} onClick={() => startEdit(dataset)}>
+            <li key={`dataset${dataset.id}`} onClick={() => startEdit(dataset)}>
               <button
                 className="delete"
                 onClick={e => {

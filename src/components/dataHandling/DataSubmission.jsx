@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { ButtonToolbar, DropdownButton, Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 
-import { data } from "../dummycomps/Data";
-import "../css/Data.css";
+import { data } from "../../dummycomps/Data";
+import "../../css/Data.css";
 
-import NewBranch from "../dummycomps/NewBranch";
-import NewDataSet from "../dummycomps/NewDataSet";
-import UserData from "../dummycomps/UserData";
-import EditData from "../components/dataHandling/EditData";
+import NewBranch from "./NewBranch";
+import NewDataSet from "./NewDataSet";
+import UserData from "./UserData";
+import EditData from "./EditData";
 
 import {
   setData,
@@ -21,7 +21,7 @@ import {
   cancelEdit,
   getData,
   addBranch
-} from "../actions/actions";
+} from "../../actions/actions";
 
 const labelArr = data.labels;
 
